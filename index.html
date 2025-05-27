@@ -106,6 +106,7 @@
             border: 1px solid #e9ecef;
             text-align: center;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .calculator-link:hover {
@@ -220,6 +221,25 @@
             margin-bottom: 1rem;
         }
 
+        .hidden {
+            display: none;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -246,140 +266,95 @@
             <p class="subtitle">Plan Your Future with Professional Financial Tools</p>
         </header>
 
-        <div class="featured-calculator">
-            <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Retirement Calculator</h2>
-            <div class="calculator-form">
-                <div class="form-section">
-                    <div class="form-group">
-                        <label for="currentAge">Current Age</label>
-                        <input type="number" id="currentAge" value="30" min="18" max="100">
+        <!-- Main Categories View -->
+        <div id="categories-view">
+            <div class="calculator-categories">
+                <div class="category-card">
+                    <h3 class="category-title">
+                        <span class="category-icon">🏠</span>
+                        Mortgage & Real Estate
+                    </h3>
+                    <div class="calculator-list">
+                        <a class="calculator-link" onclick="showCalculator('mortgage')">Mortgage Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('affordability')">Home Affordability</a>
+                        <a class="calculator-link" onclick="showCalculator('refinance')">Refinance Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('rent-vs-buy')">Rent vs Buy</a>
                     </div>
-                    <div class="form-group">
-                        <label for="retirementAge">Retirement Age</label>
-                        <input type="number" id="retirementAge" value="65" min="50" max="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="currentSavings">Current Savings ($)</label>
-                        <input type="number" id="currentSavings" value="50000" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="monthlyContribution">Monthly Contribution ($)</label>
-                        <input type="number" id="monthlyContribution" value="500" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="annualReturn">Expected Annual Return (%)</label>
-                        <input type="number" id="annualReturn" value="7" min="0" max="20" step="0.1">
-                    </div>
-                    <button class="calculate-btn" onclick="calculateRetirement()">Calculate Retirement</button>
                 </div>
-                
-                <div class="results-section">
-                    <div class="result-item">
-                        <div class="result-label">Total at Retirement</div>
-                        <div class="result-value" id="totalAmount">$0</div>
+
+                <div class="category-card">
+                    <h3 class="category-title">
+                        <span class="category-icon">💰</span>
+                        Investment & Retirement
+                    </h3>
+                    <div class="calculator-list">
+                        <a class="calculator-link" onclick="showCalculator('retirement')">Retirement Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('401k')">401(k) Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('compound')">Compound Interest</a>
+                        <a class="calculator-link" onclick="showCalculator('investment')">Investment Return</a>
+                        <a class="calculator-link" onclick="showCalculator('savings')">Savings Goal</a>
                     </div>
-                    <div class="result-item">
-                        <div class="result-label">Total Contributions</div>
-                        <div class="result-value" id="totalContributions">$0</div>
+                </div>
+
+                <div class="category-card">
+                    <h3 class="category-title">
+                        <span class="category-icon">🚗</span>
+                        Auto & Loans
+                    </h3>
+                    <div class="calculator-list">
+                        <a class="calculator-link" onclick="showCalculator('auto-loan')">Auto Loan</a>
+                        <a class="calculator-link" onclick="showCalculator('personal-loan')">Personal Loan</a>
+                        <a class="calculator-link" onclick="showCalculator('loan-comparison')">Loan Comparison</a>
+                        <a class="calculator-link" onclick="showCalculator('debt-consolidation')">Debt Consolidation</a>
                     </div>
-                    <div class="result-item">
-                        <div class="result-label">Interest Earned</div>
-                        <div class="result-value" id="interestEarned">$0</div>
+                </div>
+
+                <div class="category-card">
+                    <h3 class="category-title">
+                        <span class="category-icon">💼</span>
+                        Tax & Salary
+                    </h3>
+                    <div class="calculator-list">
+                        <a class="calculator-link" onclick="showCalculator('tax')">Tax Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('paycheck')">Paycheck Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('salary')">Salary Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('tax-refund')">Tax Refund</a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <h3 class="category-title">
+                        <span class="category-icon">📊</span>
+                        Other Financial
+                    </h3>
+                    <div class="calculator-list">
+                        <a class="calculator-link" onclick="showCalculator('budget')">Budget Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('inflation')">Inflation Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('tip')">Tip Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('discount')">Discount Calculator</a>
+                        <a class="calculator-link" onclick="showCalculator('percent')">Percentage Calculator</a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <h3 class="category-title">
+                        <span class="category-icon">🎓</span>
+                        Education & Health
+                    </h3>
+                    <div class="calculator-list">
+                        <a class="calculator-link" onclick="showCalculator('college')">College Cost</a>
+                        <a class="calculator-link" onclick="showCalculator('student-loan')">Student Loan</a>
+                        <a class="calculator-link" onclick="showCalculator('life-insurance')">Life Insurance</a>
+                        <a class="calculator-link" onclick="showCalculator('health-savings')">Health Savings Account</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="calculator-categories">
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">🏠</span>
-                    Mortgage & Real Estate
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('mortgage')">Mortgage Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('affordability')">Home Affordability</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('refinance')">Refinance Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('amortization')">Amortization Schedule</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('rent-vs-buy')">Rent vs Buy</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('property-tax')">Property Tax</a>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">💰</span>
-                    Investment & Retirement
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('retirement')">Retirement Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('401k')">401(k) Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('ira')">IRA Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('compound')">Compound Interest</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('investment')">Investment Return</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('savings')">Savings Goal</a>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">🚗</span>
-                    Auto & Loans
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('auto-loan')">Auto Loan</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('lease')">Car Lease</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('personal-loan')">Personal Loan</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('loan-comparison')">Loan Comparison</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('early-payoff')">Early Payoff</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('debt-consolidation')">Debt Consolidation</a>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">💼</span>
-                    Tax & Salary
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('tax')">Tax Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('paycheck')">Paycheck Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('salary')">Salary Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('tax-refund')">Tax Refund</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('self-employment')">Self-Employment Tax</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('withholding')">Tax Withholding</a>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">📊</span>
-                    Other Financial
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('budget')">Budget Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('inflation')">Inflation Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('currency')">Currency Converter</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('tip')">Tip Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('discount')">Discount Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('percent')">Percentage Calculator</a>
-                </div>
-            </div>
-
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">🎓</span>
-                    Education & Health
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('college')">College Cost</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('student-loan')">Student Loan</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('education-savings')">Education Savings</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('health-savings')">Health Savings Account</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('life-insurance')">Life Insurance</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('disability')">Disability Insurance</a>
-                </div>
-            </div>
+        <!-- Individual Calculator Views -->
+        <div id="calculator-view" class="hidden">
+            <button class="back-btn" onclick="showCategories()">← Back to Categories</button>
+            <div id="calculator-content"></div>
         </div>
 
         <div class="info-section">
@@ -397,60 +372,333 @@
                 currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
-            }).format(amount);
+            }).format(Math.abs(amount));
         }
 
-        function calculateRetirement() {
-            const currentAge = parseInt(document.getElementById('currentAge').value);
-            const retirementAge = parseInt(document.getElementById('retirementAge').value);
-            const currentSavings = parseFloat(document.getElementById('currentSavings').value);
-            const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
-            const annualReturn = parseFloat(document.getElementById('annualReturn').value) / 100;
-
-            if (retirementAge <= currentAge) {
-                alert('Retirement age must be greater than current age.');
-                return;
-            }
-
-            const yearsToRetirement = retirementAge - currentAge;
-            const monthsToRetirement = yearsToRetirement * 12;
-            const monthlyReturn = annualReturn / 12;
-
-            // Future value of current savings
-            const futureValueCurrentSavings = currentSavings * Math.pow(1 + annualReturn, yearsToRetirement);
-
-            // Future value of monthly contributions (annuity)
-            let futureValueContributions = 0;
-            if (monthlyReturn > 0) {
-                futureValueContributions = monthlyContribution * 
-                    ((Math.pow(1 + monthlyReturn, monthsToRetirement) - 1) / monthlyReturn);
-            } else {
-                futureValueContributions = monthlyContribution * monthsToRetirement;
-            }
-
-            const totalAmount = futureValueCurrentSavings + futureValueContributions;
-            const totalContributions = currentSavings + (monthlyContribution * monthsToRetirement);
-            const interestEarned = totalAmount - totalContributions;
-
-            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
-            document.getElementById('totalContributions').textContent = formatCurrency(totalContributions);
-            document.getElementById('interestEarned').textContent = formatCurrency(interestEarned);
+        function formatPercent(value) {
+            return (value * 100).toFixed(2) + '%';
         }
 
-        function switchCalculator(type) {
-            // Placeholder function for switching between different calculators
-            alert(`Switching to ${type} calculator. This would load a different calculator interface in a full implementation.`);
+        function showCategories() {
+            document.getElementById('categories-view').classList.remove('hidden');
+            document.getElementById('calculator-view').classList.add('hidden');
         }
 
-        // Calculate retirement on page load
-        calculateRetirement();
+        function showCalculator(type) {
+            document.getElementById('categories-view').classList.add('hidden');
+            document.getElementById('calculator-view').classList.remove('hidden');
+            
+            const content = document.getElementById('calculator-content');
+            content.innerHTML = getCalculatorHTML(type);
+            
+            // Initialize calculator-specific functionality
+            initializeCalculator(type);
+        }
 
-        // Add input event listeners for real-time calculation
-        document.getElementById('currentAge').addEventListener('input', calculateRetirement);
-        document.getElementById('retirementAge').addEventListener('input', calculateRetirement);
-        document.getElementById('currentSavings').addEventListener('input', calculateRetirement);
-        document.getElementById('monthlyContribution').addEventListener('input', calculateRetirement);
-        document.getElementById('annualReturn').addEventListener('input', calculateRetirement);
-    </script>
-</body>
-</html>
+        function getCalculatorHTML(type) {
+            const calculators = {
+                'retirement': `
+                    <div class="featured-calculator">
+                        <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Retirement Calculator</h2>
+                        <div class="calculator-form">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="currentAge">Current Age</label>
+                                    <input type="number" id="currentAge" value="30" min="18" max="100">
+                                </div>
+                                <div class="form-group">
+                                    <label for="retirementAge">Retirement Age</label>
+                                    <input type="number" id="retirementAge" value="65" min="50" max="100">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentSavings">Current Savings ($)</label>
+                                    <input type="number" id="currentSavings" value="50000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="monthlyContribution">Monthly Contribution ($)</label>
+                                    <input type="number" id="monthlyContribution" value="500" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="annualReturn">Expected Annual Return (%)</label>
+                                    <input type="number" id="annualReturn" value="7" min="0" max="20" step="0.1">
+                                </div>
+                                <button class="calculate-btn" onclick="calculateRetirement()">Calculate Retirement</button>
+                            </div>
+                            
+                            <div class="results-section">
+                                <div class="result-item">
+                                    <div class="result-label">Total at Retirement</div>
+                                    <div class="result-value" id="totalAmount">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Contributions</div>
+                                    <div class="result-value" id="totalContributions">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Interest Earned</div>
+                                    <div class="result-value" id="interestEarned">$0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'mortgage': `
+                    <div class="featured-calculator">
+                        <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Mortgage Calculator</h2>
+                        <div class="calculator-form">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="homePrice">Home Price ($)</label>
+                                    <input type="number" id="homePrice" value="300000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="downPayment">Down Payment ($)</label>
+                                    <input type="number" id="downPayment" value="60000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loanTerm">Loan Term (years)</label>
+                                    <select id="loanTerm">
+                                        <option value="15">15 years</option>
+                                        <option value="30" selected>30 years</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="interestRate">Interest Rate (%)</label>
+                                    <input type="number" id="interestRate" value="6.5" min="0" max="20" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="propertyTax">Annual Property Tax ($)</label>
+                                    <input type="number" id="propertyTax" value="3600" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="homeInsurance">Annual Home Insurance ($)</label>
+                                    <input type="number" id="homeInsurance" value="1200" min="0">
+                                </div>
+                                <button class="calculate-btn" onclick="calculateMortgage()">Calculate Mortgage</button>
+                            </div>
+                            
+                            <div class="results-section">
+                                <div class="result-item">
+                                    <div class="result-label">Monthly Payment</div>
+                                    <div class="result-value" id="monthlyPayment">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Principal & Interest</div>
+                                    <div class="result-value" id="principalInterest">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Interest Paid</div>
+                                    <div class="result-value" id="totalInterest">$0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'auto-loan': `
+                    <div class="featured-calculator">
+                        <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Auto Loan Calculator</h2>
+                        <div class="calculator-form">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="carPrice">Car Price ($)</label>
+                                    <input type="number" id="carPrice" value="25000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="carDownPayment">Down Payment ($)</label>
+                                    <input type="number" id="carDownPayment" value="5000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="carLoanTerm">Loan Term (years)</label>
+                                    <select id="carLoanTerm">
+                                        <option value="3">3 years</option>
+                                        <option value="4">4 years</option>
+                                        <option value="5" selected>5 years</option>
+                                        <option value="6">6 years</option>
+                                        <option value="7">7 years</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="carInterestRate">Interest Rate (%)</label>
+                                    <input type="number" id="carInterestRate" value="5.5" min="0" max="30" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tradeInValue">Trade-in Value ($)</label>
+                                    <input type="number" id="tradeInValue" value="0" min="0">
+                                </div>
+                                <button class="calculate-btn" onclick="calculateAutoLoan()">Calculate Auto Loan</button>
+                            </div>
+                            
+                            <div class="results-section">
+                                <div class="result-item">
+                                    <div class="result-label">Monthly Payment</div>
+                                    <div class="result-value" id="carMonthlyPayment">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Loan Amount</div>
+                                    <div class="result-value" id="totalLoanAmount">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Interest</div>
+                                    <div class="result-value" id="carTotalInterest">$0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'compound': `
+                    <div class="featured-calculator">
+                        <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Compound Interest Calculator</h2>
+                        <div class="calculator-form">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="principal">Initial Investment ($)</label>
+                                    <input type="number" id="principal" value="10000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="monthlyDeposit">Monthly Deposit ($)</label>
+                                    <input type="number" id="monthlyDeposit" value="200" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="compoundRate">Annual Interest Rate (%)</label>
+                                    <input type="number" id="compoundRate" value="8" min="0" max="30" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="compoundYears">Investment Period (years)</label>
+                                    <input type="number" id="compoundYears" value="20" min="1" max="50">
+                                </div>
+                                <div class="form-group">
+                                    <label for="compoundFrequency">Compound Frequency</label>
+                                    <select id="compoundFrequency">
+                                        <option value="1">Annually</option>
+                                        <option value="4">Quarterly</option>
+                                        <option value="12" selected>Monthly</option>
+                                        <option value="365">Daily</option>
+                                    </select>
+                                </div>
+                                <button class="calculate-btn" onclick="calculateCompound()">Calculate Growth</button>
+                            </div>
+                            
+                            <div class="results-section">
+                                <div class="result-item">
+                                    <div class="result-label">Final Amount</div>
+                                    <div class="result-value" id="compoundFinalAmount">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Deposits</div>
+                                    <div class="result-value" id="compoundTotalDeposits">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Interest Earned</div>
+                                    <div class="result-value" id="compoundInterestEarned">$0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'tip': `
+                    <div class="featured-calculator">
+                        <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Tip Calculator</h2>
+                        <div class="calculator-form">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="billAmount">Bill Amount ($)</label>
+                                    <input type="number" id="billAmount" value="50" min="0" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tipPercent">Tip Percentage (%)</label>
+                                    <input type="number" id="tipPercent" value="18" min="0" max="50">
+                                </div>
+                                <div class="form-group">
+                                    <label for="numPeople">Number of People</label>
+                                    <input type="number" id="numPeople" value="1" min="1" max="20">
+                                </div>
+                                <button class="calculate-btn" onclick="calculateTip()">Calculate Tip</button>
+                            </div>
+                            
+                            <div class="results-section">
+                                <div class="result-item">
+                                    <div class="result-label">Tip Amount</div>
+                                    <div class="result-value" id="tipAmount">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Bill</div>
+                                    <div class="result-value" id="totalBill">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Per Person</div>
+                                    <div class="result-value" id="perPerson">$0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'savings': `
+                    <div class="featured-calculator">
+                        <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Savings Goal Calculator</h2>
+                        <div class="calculator-form">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label for="savingsGoal">Savings Goal ($)</label>
+                                    <input type="number" id="savingsGoal" value="10000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentSavingsAmount">Current Savings ($)</label>
+                                    <input type="number" id="currentSavingsAmount" value="1000" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="monthlySavings">Monthly Savings ($)</label>
+                                    <input type="number" id="monthlySavings" value="300" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="savingsInterestRate">Interest Rate (% annually)</label>
+                                    <input type="number" id="savingsInterestRate" value="2.5" min="0" max="20" step="0.01">
+                                </div>
+                                <button class="calculate-btn" onclick="calculateSavingsGoal()">Calculate Timeline</button>
+                            </div>
+                            
+                            <div class="results-section">
+                                <div class="result-item">
+                                    <div class="result-label">Time to Goal</div>
+                                    <div class="result-value" id="timeToGoal">0 months</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Total Contributions</div>
+                                    <div class="result-value" id="savingsTotalContributions">$0</div>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-label">Interest Earned</div>
+                                    <div class="result-value" id="savingsInterestEarned">$0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            };
+
+            return calculators[type] || `
+                <div class="featured-calculator">
+                    <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">${type.charAt(0).toUpperCase() + type.slice(1)} Calculator</h2>
+                    <div style="text-align: center; padding: 2rem;">
+                        <p style="font-size: 1.2rem; color: #6c757d;">This calculator is coming soon!</p>
+                        <p style="color: #6c757d; margin-top: 1rem;">We're working on adding more calculators to help with your financial planning.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initializeCalculator(type) {
+            switch(type) {
+                case 'retirement':
+                    // Add event listeners for real-time calculation
+                    const retirementInputs = ['currentAge', 'retirementAge', 'currentSavings', 'monthlyContribution', 'annualReturn'];
+                    retirementInputs.forEach(id => {
+                        const element = document.getElementById(id);
+                        if (element) {
+                            element.addEventListener('input', calculateRetirement);
+                        }
+                    });
+                    calculateRetirement();
+                    break;
+                case 'mortgage':
+                    const mortgageInputs = ['homePrice', 'downPayment', 'loanTerm', 'interestRate', 'propertyTax', 'homeInsurance'];
+                    mortgageInputs
