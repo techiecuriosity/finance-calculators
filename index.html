@@ -40,6 +40,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Financial Calculators">
+    <meta name="theme-color" content="#667eea">
 
     <!-- Structured Data - WebApplication Schema -->
     <script type="application/ld+json">
@@ -342,19 +343,37 @@
         .hidden {
             display: none;
         }
+
+        /* Skip to main content link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="container">
-        <header>
+        <header role="banner">
             <h1>💰 Financial Calculators</h1>
             <p class="subtitle">Professional Tools to Plan Your Financial Future</p>
         </header>
 
+        <main role="main" id="main-content" aria-label="Financial calculators and tools">
         <div class="calculator-grid">
             <!-- Retirement Calculator -->
-            <div class="calculator-card">
-                <h2><span class="calculator-icon">🏖️</span> Retirement Calculator</h2>
+            <div class="calculator-card" role="region" aria-labelledby="retirement-calc-title">
+                <h2 id="retirement-calc-title"><span class="calculator-icon" aria-hidden="true">🏖️</span> Retirement Calculator</h2>
                 <div class="form-group">
                     <label for="retirementCurrentAge">Current Age</label>
                     <input type="number" id="retirementCurrentAge" value="30" min="18" max="100">
@@ -706,9 +725,10 @@
 
             <p><strong>Disclaimer:</strong> These financial calculators are for educational and informational purposes only. They should not be considered as financial, investment, tax, or legal advice. Results are estimates based on the information you provide. For personalized guidance on your specific financial situation, please consult with qualified financial, tax, or legal professionals.</p>
         </div>
+        </main>
 
         <!-- Footer with Additional Links -->
-        <footer style="background: white; border-radius: 15px; padding: 2rem; margin-top: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center;">
+        <footer role="contentinfo" style="background: white; border-radius: 15px; padding: 2rem; margin-top: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center;">
             <p style="color: #6c757d; margin-bottom: 0.5rem;"><strong>Retirement Calculator Pro</strong> - Free Financial Planning Tools</p>
             <p style="color: #6c757d; font-size: 0.9rem;">© 2024 RetirementCalcPro.com - All calculators are free to use. Calculate your retirement, mortgage, investments & more.</p>
             <p style="color: #6c757d; font-size: 0.85rem; margin-top: 1rem;">Keywords: retirement calculator, mortgage calculator, investment calculator, 401k calculator, loan calculator, budget calculator, financial planning tools</p>
