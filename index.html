@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Calculators - Plan Your Future</title>
+    <meta name="description" content="Professional financial calculators for retirement, mortgage, investments, loans, and more. Make informed financial decisions with our free tools.">
     <style>
         * {
             margin: 0;
@@ -12,385 +13,498 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
             padding: 2rem 0;
             text-align: center;
             margin-bottom: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 0.5rem;
             font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
             font-size: 1.2rem;
-            opacity: 0.9;
-            font-weight: 300;
+            color: #666;
+            font-weight: 400;
         }
 
-        .calculator-categories {
+        .calculator-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
 
-        .category-card {
+        .calculator-card {
             background: white;
             border-radius: 15px;
             padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #e9ecef;
         }
 
-        .category-card:hover {
+        .calculator-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
         }
 
-        .category-title {
-            font-size: 1.5rem;
+        .calculator-card h2 {
             color: #495057;
             margin-bottom: 1.5rem;
+            font-size: 1.6rem;
             display: flex;
             align-items: center;
-            font-weight: 600;
+            gap: 0.5rem;
         }
 
-        .category-icon {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .calculator-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.8rem;
-        }
-
-        .calculator-link {
-            display: block;
-            padding: 0.8rem 1rem;
-            background: #f8f9fa;
-            color: #495057;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: 1px solid #e9ecef;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .calculator-link:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: scale(1.02);
-        }
-
-        .featured-calculator {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .calculator-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            align-items: start;
-        }
-
-        .form-section {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
+        .calculator-icon {
+            font-size: 1.8rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             font-weight: 600;
             color: #495057;
+            font-size: 0.9rem;
         }
 
-        .form-group input, .form-group select {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.7rem;
             border: 2px solid #e9ecef;
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
         }
 
-        .calculate-btn {
+        .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             width: 100%;
+            margin-top: 0.5rem;
         }
 
-        .calculate-btn:hover {
+        .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .results-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .results {
+            margin-top: 1.5rem;
             padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
             border-radius: 10px;
-            text-align: center;
+            border-left: 4px solid #667eea;
         }
 
         .result-item {
-            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
         }
 
         .result-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 0.2rem;
+            font-weight: 500;
+            color: #495057;
         }
 
         .result-value {
-            font-size: 1.8rem;
             font-weight: 700;
+            color: #667eea;
+            font-size: 1.1rem;
         }
 
         .info-section {
             background: white;
             border-radius: 15px;
             padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             margin-top: 2rem;
         }
 
         .info-section h3 {
             color: #495057;
             margin-bottom: 1rem;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
         }
 
         .info-section p {
             color: #6c757d;
             margin-bottom: 1rem;
+            line-height: 1.7;
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
             }
-            
+
             h1 {
                 font-size: 2rem;
             }
-            
-            .calculator-categories {
+
+            .calculator-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .calculator-form {
-                grid-template-columns: 1fr;
-            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Financial Calculators</h1>
-            <p class="subtitle">Plan Your Future with Professional Financial Tools</p>
+            <h1>💰 Financial Calculators</h1>
+            <p class="subtitle">Professional Tools to Plan Your Financial Future</p>
         </header>
 
-        <div class="featured-calculator">
-            <h2 style="color: #495057; margin-bottom: 1.5rem; text-align: center;">Retirement Calculator</h2>
-            <div class="calculator-form">
-                <div class="form-section">
-                    <div class="form-group">
-                        <label for="currentAge">Current Age</label>
-                        <input type="number" id="currentAge" value="30" min="18" max="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="retirementAge">Retirement Age</label>
-                        <input type="number" id="retirementAge" value="65" min="50" max="100">
-                    </div>
-                    <div class="form-group">
-                        <label for="currentSavings">Current Savings ($)</label>
-                        <input type="number" id="currentSavings" value="50000" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="monthlyContribution">Monthly Contribution ($)</label>
-                        <input type="number" id="monthlyContribution" value="500" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="annualReturn">Expected Annual Return (%)</label>
-                        <input type="number" id="annualReturn" value="7" min="0" max="20" step="0.1">
-                    </div>
-                    <button class="calculate-btn" onclick="calculateRetirement()">Calculate Retirement</button>
+        <div class="calculator-grid">
+            <!-- Retirement Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">🏖️</span> Retirement Calculator</h2>
+                <div class="form-group">
+                    <label for="retirementCurrentAge">Current Age</label>
+                    <input type="number" id="retirementCurrentAge" value="30" min="18" max="100">
                 </div>
-                
-                <div class="results-section">
-                    <div class="result-item">
-                        <div class="result-label">Total at Retirement</div>
-                        <div class="result-value" id="totalAmount">$0</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-label">Total Contributions</div>
-                        <div class="result-value" id="totalContributions">$0</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-label">Interest Earned</div>
-                        <div class="result-value" id="interestEarned">$0</div>
-                    </div>
+                <div class="form-group">
+                    <label for="retirementAge">Retirement Age</label>
+                    <input type="number" id="retirementAge" value="65" min="50" max="100">
                 </div>
-            </div>
-        </div>
-
-        <div class="calculator-categories">
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">🏠</span>
-                    Mortgage & Real Estate
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('mortgage')">Mortgage Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('affordability')">Home Affordability</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('refinance')">Refinance Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('amortization')">Amortization Schedule</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('rent-vs-buy')">Rent vs Buy</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('property-tax')">Property Tax</a>
+                <div class="form-group">
+                    <label for="currentSavings">Current Savings ($)</label>
+                    <input type="number" id="currentSavings" value="50000" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="monthlyContribution">Monthly Contribution ($)</label>
+                    <input type="number" id="monthlyContribution" value="500" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="annualReturn">Expected Annual Return (%)</label>
+                    <input type="number" id="annualReturn" value="7" min="0" max="20" step="0.1">
+                </div>
+                <button class="btn" onclick="calculateRetirement()">Calculate</button>
+                <div id="retirementResults" class="results hidden"></div>
             </div>
 
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">💰</span>
-                    Investment & Retirement
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('retirement')">Retirement Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('401k')">401(k) Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('ira')">IRA Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('compound')">Compound Interest</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('investment')">Investment Return</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('savings')">Savings Goal</a>
+            <!-- Mortgage Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">🏠</span> Mortgage Calculator</h2>
+                <div class="form-group">
+                    <label for="homePrice">Home Price ($)</label>
+                    <input type="number" id="homePrice" value="400000" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="downPayment">Down Payment ($)</label>
+                    <input type="number" id="downPayment" value="80000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="mortgageRate">Interest Rate (%)</label>
+                    <input type="number" id="mortgageRate" value="6.5" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="loanTerm">Loan Term (years)</label>
+                    <input type="number" id="loanTerm" value="30" min="1" max="50">
+                </div>
+                <button class="btn" onclick="calculateMortgage()">Calculate</button>
+                <div id="mortgageResults" class="results hidden"></div>
             </div>
 
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">🚗</span>
-                    Auto & Loans
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('auto-loan')">Auto Loan</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('lease')">Car Lease</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('personal-loan')">Personal Loan</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('loan-comparison')">Loan Comparison</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('early-payoff')">Early Payoff</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('debt-consolidation')">Debt Consolidation</a>
+            <!-- Investment Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">📈</span> Investment Calculator</h2>
+                <div class="form-group">
+                    <label for="initialInvestment">Initial Investment ($)</label>
+                    <input type="number" id="initialInvestment" value="10000" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="monthlyInvestment">Monthly Contribution ($)</label>
+                    <input type="number" id="monthlyInvestment" value="200" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="investmentReturn">Expected Annual Return (%)</label>
+                    <input type="number" id="investmentReturn" value="8" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="investmentYears">Time Period (years)</label>
+                    <input type="number" id="investmentYears" value="20" min="1" max="50">
+                </div>
+                <button class="btn" onclick="calculateInvestment()">Calculate</button>
+                <div id="investmentResults" class="results hidden"></div>
             </div>
 
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">💼</span>
-                    Tax & Salary
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('tax')">Tax Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('paycheck')">Paycheck Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('salary')">Salary Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('tax-refund')">Tax Refund</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('self-employment')">Self-Employment Tax</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('withholding')">Tax Withholding</a>
+            <!-- Compound Interest Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">💵</span> Compound Interest</h2>
+                <div class="form-group">
+                    <label for="principal">Principal Amount ($)</label>
+                    <input type="number" id="principal" value="5000" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="compoundRate">Interest Rate (%)</label>
+                    <input type="number" id="compoundRate" value="5" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="compoundTime">Time Period (years)</label>
+                    <input type="number" id="compoundTime" value="10" min="1" max="50">
+                </div>
+                <div class="form-group">
+                    <label for="compoundFrequency">Compound Frequency</label>
+                    <select id="compoundFrequency">
+                        <option value="1">Annually</option>
+                        <option value="2">Semi-Annually</option>
+                        <option value="4">Quarterly</option>
+                        <option value="12" selected>Monthly</option>
+                        <option value="365">Daily</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="calculateCompoundInterest()">Calculate</button>
+                <div id="compoundResults" class="results hidden"></div>
             </div>
 
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">📊</span>
-                    Other Financial
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('budget')">Budget Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('inflation')">Inflation Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('currency')">Currency Converter</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('tip')">Tip Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('discount')">Discount Calculator</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('percent')">Percentage Calculator</a>
+            <!-- Auto Loan Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">🚗</span> Auto Loan Calculator</h2>
+                <div class="form-group">
+                    <label for="carPrice">Car Price ($)</label>
+                    <input type="number" id="carPrice" value="30000" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="carDownPayment">Down Payment ($)</label>
+                    <input type="number" id="carDownPayment" value="5000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="autoLoanRate">Interest Rate (%)</label>
+                    <input type="number" id="autoLoanRate" value="4.5" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="autoLoanTerm">Loan Term (years)</label>
+                    <input type="number" id="autoLoanTerm" value="5" min="1" max="10">
+                </div>
+                <button class="btn" onclick="calculateAutoLoan()">Calculate</button>
+                <div id="autoLoanResults" class="results hidden"></div>
             </div>
 
-            <div class="category-card">
-                <h3 class="category-title">
-                    <span class="category-icon">🎓</span>
-                    Education & Health
-                </h3>
-                <div class="calculator-list">
-                    <a href="#" class="calculator-link" onclick="switchCalculator('college')">College Cost</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('student-loan')">Student Loan</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('education-savings')">Education Savings</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('health-savings')">Health Savings Account</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('life-insurance')">Life Insurance</a>
-                    <a href="#" class="calculator-link" onclick="switchCalculator('disability')">Disability Insurance</a>
+            <!-- Savings Goal Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">🎯</span> Savings Goal Calculator</h2>
+                <div class="form-group">
+                    <label for="savingsGoal">Savings Goal ($)</label>
+                    <input type="number" id="savingsGoal" value="50000" min="0">
                 </div>
+                <div class="form-group">
+                    <label for="currentSavingsAmount">Current Savings ($)</label>
+                    <input type="number" id="currentSavingsAmount" value="5000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="savingsRate">Expected Return (%)</label>
+                    <input type="number" id="savingsRate" value="6" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="savingsYears">Time to Goal (years)</label>
+                    <input type="number" id="savingsYears" value="10" min="1" max="50">
+                </div>
+                <button class="btn" onclick="calculateSavingsGoal()">Calculate</button>
+                <div id="savingsGoalResults" class="results hidden"></div>
+            </div>
+
+            <!-- Loan Payment Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">💳</span> Loan Payment Calculator</h2>
+                <div class="form-group">
+                    <label for="loanAmount">Loan Amount ($)</label>
+                    <input type="number" id="loanAmount" value="20000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="loanRate">Interest Rate (%)</label>
+                    <input type="number" id="loanRate" value="7.5" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="loanTermYears">Loan Term (years)</label>
+                    <input type="number" id="loanTermYears" value="5" min="1" max="30">
+                </div>
+                <button class="btn" onclick="calculateLoanPayment()">Calculate</button>
+                <div id="loanPaymentResults" class="results hidden"></div>
+            </div>
+
+            <!-- Debt Payoff Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">💰</span> Debt Payoff Calculator</h2>
+                <div class="form-group">
+                    <label for="debtAmount">Total Debt ($)</label>
+                    <input type="number" id="debtAmount" value="15000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="debtRate">Interest Rate (%)</label>
+                    <input type="number" id="debtRate" value="18" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="monthlyPayment">Monthly Payment ($)</label>
+                    <input type="number" id="monthlyPayment" value="500" min="0">
+                </div>
+                <button class="btn" onclick="calculateDebtPayoff()">Calculate</button>
+                <div id="debtPayoffResults" class="results hidden"></div>
+            </div>
+
+            <!-- Budget Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">📊</span> Budget Calculator</h2>
+                <div class="form-group">
+                    <label for="monthlyIncome">Monthly Income ($)</label>
+                    <input type="number" id="monthlyIncome" value="5000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="housingExpense">Housing ($)</label>
+                    <input type="number" id="housingExpense" value="1500" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="transportationExpense">Transportation ($)</label>
+                    <input type="number" id="transportationExpense" value="500" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="foodExpense">Food & Groceries ($)</label>
+                    <input type="number" id="foodExpense" value="600" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="otherExpenses">Other Expenses ($)</label>
+                    <input type="number" id="otherExpenses" value="800" min="0">
+                </div>
+                <button class="btn" onclick="calculateBudget()">Calculate</button>
+                <div id="budgetResults" class="results hidden"></div>
+            </div>
+
+            <!-- Tax Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">💼</span> Income Tax Calculator</h2>
+                <div class="form-group">
+                    <label for="annualIncome">Annual Income ($)</label>
+                    <input type="number" id="annualIncome" value="75000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="filingStatus">Filing Status</label>
+                    <select id="filingStatus">
+                        <option value="single">Single</option>
+                        <option value="married">Married Filing Jointly</option>
+                        <option value="head">Head of Household</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deductions">Deductions ($)</label>
+                    <input type="number" id="deductions" value="13850" min="0">
+                </div>
+                <button class="btn" onclick="calculateTax()">Calculate</button>
+                <div id="taxResults" class="results hidden"></div>
+            </div>
+
+            <!-- 401(k) Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">📊</span> 401(k) Calculator</h2>
+                <div class="form-group">
+                    <label for="current401k">Current 401(k) Balance ($)</label>
+                    <input type="number" id="current401k" value="25000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="annualSalary">Annual Salary ($)</label>
+                    <input type="number" id="annualSalary" value="80000" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="contribution401k">Contribution Rate (%)</label>
+                    <input type="number" id="contribution401k" value="6" min="0" max="100" step="0.5">
+                </div>
+                <div class="form-group">
+                    <label for="employerMatch">Employer Match (%)</label>
+                    <input type="number" id="employerMatch" value="3" min="0" max="100" step="0.5">
+                </div>
+                <div class="form-group">
+                    <label for="401kReturn">Expected Return (%)</label>
+                    <input type="number" id="401kReturn" value="7" min="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="401kYears">Years Until Retirement</label>
+                    <input type="number" id="401kYears" value="30" min="1" max="50">
+                </div>
+                <button class="btn" onclick="calculate401k()">Calculate</button>
+                <div id="401kResults" class="results hidden"></div>
+            </div>
+
+            <!-- Tip Calculator -->
+            <div class="calculator-card">
+                <h2><span class="calculator-icon">🧾</span> Tip Calculator</h2>
+                <div class="form-group">
+                    <label for="billAmount">Bill Amount ($)</label>
+                    <input type="number" id="billAmount" value="100" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="tipPercentage">Tip Percentage (%)</label>
+                    <input type="number" id="tipPercentage" value="18" min="0" max="100">
+                </div>
+                <div class="form-group">
+                    <label for="numberOfPeople">Split Between (people)</label>
+                    <input type="number" id="numberOfPeople" value="1" min="1">
+                </div>
+                <button class="btn" onclick="calculateTip()">Calculate</button>
+                <div id="tipResults" class="results hidden"></div>
             </div>
         </div>
 
         <div class="info-section">
             <h3>About Our Financial Calculators</h3>
-            <p>Our comprehensive collection of financial calculators helps you make informed decisions about your money. Whether you're planning for retirement, buying a home, or managing debt, our tools provide accurate calculations and insights to guide your financial journey.</p>
-            <p>Each calculator is designed with user-friendly interfaces and provides detailed explanations to help you understand the results. Our calculations are based on standard financial formulas and can serve as a starting point for your financial planning.</p>
-            <p><strong>Disclaimer:</strong> These calculators are for educational purposes only and should not be considered as financial advice. Please consult with a qualified financial advisor for personalized guidance.</p>
+            <p>Our comprehensive suite of financial calculators helps you make informed decisions about your money. Whether you're planning for retirement, buying a home, managing debt, or budgeting for your future, our tools provide accurate calculations and valuable insights.</p>
+            <p>Each calculator is designed with simplicity and accuracy in mind, using industry-standard financial formulas. The results can help you understand your financial situation and plan accordingly.</p>
+            <p><strong>Disclaimer:</strong> These calculators are for educational and informational purposes only. They should not be considered as financial, investment, tax, or legal advice. Please consult with qualified professionals for personalized guidance on your specific financial situation.</p>
         </div>
     </div>
 
     <script>
+        // Utility Functions
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -400,8 +514,28 @@
             }).format(amount);
         }
 
+        function formatCurrencyDecimals(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function formatPercentage(value) {
+            return value.toFixed(2) + '%';
+        }
+
+        function showResults(elementId, html) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = html;
+            element.classList.remove('hidden');
+        }
+
+        // Retirement Calculator
         function calculateRetirement() {
-            const currentAge = parseInt(document.getElementById('currentAge').value);
+            const currentAge = parseInt(document.getElementById('retirementCurrentAge').value);
             const retirementAge = parseInt(document.getElementById('retirementAge').value);
             const currentSavings = parseFloat(document.getElementById('currentSavings').value);
             const monthlyContribution = parseFloat(document.getElementById('monthlyContribution').value);
@@ -416,14 +550,11 @@
             const monthsToRetirement = yearsToRetirement * 12;
             const monthlyReturn = annualReturn / 12;
 
-            // Future value of current savings
             const futureValueCurrentSavings = currentSavings * Math.pow(1 + annualReturn, yearsToRetirement);
-
-            // Future value of monthly contributions (annuity)
             let futureValueContributions = 0;
+
             if (monthlyReturn > 0) {
-                futureValueContributions = monthlyContribution * 
-                    ((Math.pow(1 + monthlyReturn, monthsToRetirement) - 1) / monthlyReturn);
+                futureValueContributions = monthlyContribution * ((Math.pow(1 + monthlyReturn, monthsToRetirement) - 1) / monthlyReturn);
             } else {
                 futureValueContributions = monthlyContribution * monthsToRetirement;
             }
@@ -432,25 +563,479 @@
             const totalContributions = currentSavings + (monthlyContribution * monthsToRetirement);
             const interestEarned = totalAmount - totalContributions;
 
-            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
-            document.getElementById('totalContributions').textContent = formatCurrency(totalContributions);
-            document.getElementById('interestEarned').textContent = formatCurrency(interestEarned);
+            showResults('retirementResults', `
+                <div class="result-item">
+                    <span class="result-label">Total at Retirement:</span>
+                    <span class="result-value">${formatCurrency(totalAmount)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Contributions:</span>
+                    <span class="result-value">${formatCurrency(totalContributions)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Interest Earned:</span>
+                    <span class="result-value">${formatCurrency(interestEarned)}</span>
+                </div>
+            `);
         }
 
-        function switchCalculator(type) {
-            // Placeholder function for switching between different calculators
-            alert(`Switching to ${type} calculator. This would load a different calculator interface in a full implementation.`);
+        // Mortgage Calculator
+        function calculateMortgage() {
+            const homePrice = parseFloat(document.getElementById('homePrice').value);
+            const downPayment = parseFloat(document.getElementById('downPayment').value);
+            const mortgageRate = parseFloat(document.getElementById('mortgageRate').value) / 100;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+            const loanAmount = homePrice - downPayment;
+            const monthlyRate = mortgageRate / 12;
+            const numberOfPayments = loanTerm * 12;
+
+            const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                                 (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            const totalPayment = monthlyPayment * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            showResults('mortgageResults', `
+                <div class="result-item">
+                    <span class="result-label">Loan Amount:</span>
+                    <span class="result-value">${formatCurrency(loanAmount)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Monthly Payment:</span>
+                    <span class="result-value">${formatCurrencyDecimals(monthlyPayment)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Payment:</span>
+                    <span class="result-value">${formatCurrency(totalPayment)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Interest:</span>
+                    <span class="result-value">${formatCurrency(totalInterest)}</span>
+                </div>
+            `);
         }
 
-        // Calculate retirement on page load
-        calculateRetirement();
+        // Investment Calculator
+        function calculateInvestment() {
+            const initialInvestment = parseFloat(document.getElementById('initialInvestment').value);
+            const monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value);
+            const investmentReturn = parseFloat(document.getElementById('investmentReturn').value) / 100;
+            const investmentYears = parseInt(document.getElementById('investmentYears').value);
 
-        // Add input event listeners for real-time calculation
-        document.getElementById('currentAge').addEventListener('input', calculateRetirement);
-        document.getElementById('retirementAge').addEventListener('input', calculateRetirement);
-        document.getElementById('currentSavings').addEventListener('input', calculateRetirement);
-        document.getElementById('monthlyContribution').addEventListener('input', calculateRetirement);
-        document.getElementById('annualReturn').addEventListener('input', calculateRetirement);
+            const monthlyRate = investmentReturn / 12;
+            const numberOfMonths = investmentYears * 12;
+
+            let futureValue = initialInvestment * Math.pow(1 + monthlyRate, numberOfMonths);
+
+            if (monthlyInvestment > 0) {
+                futureValue += monthlyInvestment * ((Math.pow(1 + monthlyRate, numberOfMonths) - 1) / monthlyRate);
+            }
+
+            const totalInvested = initialInvestment + (monthlyInvestment * numberOfMonths);
+            const totalReturn = futureValue - totalInvested;
+            const roi = (totalReturn / totalInvested) * 100;
+
+            showResults('investmentResults', `
+                <div class="result-item">
+                    <span class="result-label">Future Value:</span>
+                    <span class="result-value">${formatCurrency(futureValue)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Invested:</span>
+                    <span class="result-value">${formatCurrency(totalInvested)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Return:</span>
+                    <span class="result-value">${formatCurrency(totalReturn)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">ROI:</span>
+                    <span class="result-value">${formatPercentage(roi)}</span>
+                </div>
+            `);
+        }
+
+        // Compound Interest Calculator
+        function calculateCompoundInterest() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const compoundRate = parseFloat(document.getElementById('compoundRate').value) / 100;
+            const compoundTime = parseInt(document.getElementById('compoundTime').value);
+            const compoundFrequency = parseInt(document.getElementById('compoundFrequency').value);
+
+            const amount = principal * Math.pow(1 + compoundRate / compoundFrequency, compoundFrequency * compoundTime);
+            const interest = amount - principal;
+            const effectiveRate = ((Math.pow(1 + compoundRate / compoundFrequency, compoundFrequency) - 1) * 100);
+
+            showResults('compoundResults', `
+                <div class="result-item">
+                    <span class="result-label">Final Amount:</span>
+                    <span class="result-value">${formatCurrency(amount)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Interest:</span>
+                    <span class="result-value">${formatCurrency(interest)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Effective Rate:</span>
+                    <span class="result-value">${formatPercentage(effectiveRate)}</span>
+                </div>
+            `);
+        }
+
+        // Auto Loan Calculator
+        function calculateAutoLoan() {
+            const carPrice = parseFloat(document.getElementById('carPrice').value);
+            const carDownPayment = parseFloat(document.getElementById('carDownPayment').value);
+            const autoLoanRate = parseFloat(document.getElementById('autoLoanRate').value) / 100;
+            const autoLoanTerm = parseInt(document.getElementById('autoLoanTerm').value);
+
+            const loanAmount = carPrice - carDownPayment;
+            const monthlyRate = autoLoanRate / 12;
+            const numberOfPayments = autoLoanTerm * 12;
+
+            const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                                 (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            const totalPayment = monthlyPayment * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            showResults('autoLoanResults', `
+                <div class="result-item">
+                    <span class="result-label">Loan Amount:</span>
+                    <span class="result-value">${formatCurrency(loanAmount)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Monthly Payment:</span>
+                    <span class="result-value">${formatCurrencyDecimals(monthlyPayment)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Cost:</span>
+                    <span class="result-value">${formatCurrency(totalPayment + carDownPayment)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Interest:</span>
+                    <span class="result-value">${formatCurrency(totalInterest)}</span>
+                </div>
+            `);
+        }
+
+        // Savings Goal Calculator
+        function calculateSavingsGoal() {
+            const savingsGoal = parseFloat(document.getElementById('savingsGoal').value);
+            const currentSavingsAmount = parseFloat(document.getElementById('currentSavingsAmount').value);
+            const savingsRate = parseFloat(document.getElementById('savingsRate').value) / 100;
+            const savingsYears = parseInt(document.getElementById('savingsYears').value);
+
+            const monthlyRate = savingsRate / 12;
+            const numberOfMonths = savingsYears * 12;
+
+            const futureValueCurrent = currentSavingsAmount * Math.pow(1 + monthlyRate, numberOfMonths);
+            const remainingNeeded = savingsGoal - futureValueCurrent;
+
+            let monthlyContributionNeeded = 0;
+            if (monthlyRate > 0) {
+                monthlyContributionNeeded = remainingNeeded * monthlyRate / ((Math.pow(1 + monthlyRate, numberOfMonths) - 1));
+            } else {
+                monthlyContributionNeeded = remainingNeeded / numberOfMonths;
+            }
+
+            const totalContributions = monthlyContributionNeeded * numberOfMonths;
+
+            showResults('savingsGoalResults', `
+                <div class="result-item">
+                    <span class="result-label">Monthly Savings Needed:</span>
+                    <span class="result-value">${formatCurrencyDecimals(monthlyContributionNeeded)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total to Save:</span>
+                    <span class="result-value">${formatCurrency(totalContributions)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Current Savings Growth:</span>
+                    <span class="result-value">${formatCurrency(futureValueCurrent)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Goal Amount:</span>
+                    <span class="result-value">${formatCurrency(savingsGoal)}</span>
+                </div>
+            `);
+        }
+
+        // Loan Payment Calculator
+        function calculateLoanPayment() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const loanRate = parseFloat(document.getElementById('loanRate').value) / 100;
+            const loanTermYears = parseInt(document.getElementById('loanTermYears').value);
+
+            const monthlyRate = loanRate / 12;
+            const numberOfPayments = loanTermYears * 12;
+
+            const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                                 (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            const totalPayment = monthlyPayment * numberOfPayments;
+            const totalInterest = totalPayment - loanAmount;
+
+            showResults('loanPaymentResults', `
+                <div class="result-item">
+                    <span class="result-label">Monthly Payment:</span>
+                    <span class="result-value">${formatCurrencyDecimals(monthlyPayment)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Payment:</span>
+                    <span class="result-value">${formatCurrency(totalPayment)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Interest:</span>
+                    <span class="result-value">${formatCurrency(totalInterest)}</span>
+                </div>
+            `);
+        }
+
+        // Debt Payoff Calculator
+        function calculateDebtPayoff() {
+            const debtAmount = parseFloat(document.getElementById('debtAmount').value);
+            const debtRate = parseFloat(document.getElementById('debtRate').value) / 100;
+            const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value);
+
+            const monthlyRate = debtRate / 12;
+
+            let months = 0;
+            let balance = debtAmount;
+            let totalInterest = 0;
+
+            while (balance > 0 && months < 360) {
+                const interest = balance * monthlyRate;
+                const principal = monthlyPayment - interest;
+
+                if (principal <= 0) {
+                    alert('Monthly payment is too low to pay off the debt.');
+                    return;
+                }
+
+                totalInterest += interest;
+                balance -= principal;
+                months++;
+            }
+
+            const years = Math.floor(months / 12);
+            const remainingMonths = months % 12;
+            const totalPaid = monthlyPayment * months;
+
+            showResults('debtPayoffResults', `
+                <div class="result-item">
+                    <span class="result-label">Time to Payoff:</span>
+                    <span class="result-value">${years} years ${remainingMonths} months</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Paid:</span>
+                    <span class="result-value">${formatCurrency(totalPaid)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Interest:</span>
+                    <span class="result-value">${formatCurrency(totalInterest)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Months:</span>
+                    <span class="result-value">${months} months</span>
+                </div>
+            `);
+        }
+
+        // Budget Calculator
+        function calculateBudget() {
+            const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value);
+            const housingExpense = parseFloat(document.getElementById('housingExpense').value);
+            const transportationExpense = parseFloat(document.getElementById('transportationExpense').value);
+            const foodExpense = parseFloat(document.getElementById('foodExpense').value);
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value);
+
+            const totalExpenses = housingExpense + transportationExpense + foodExpense + otherExpenses;
+            const remaining = monthlyIncome - totalExpenses;
+            const savingsRate = (remaining / monthlyIncome) * 100;
+            const housingRatio = (housingExpense / monthlyIncome) * 100;
+
+            showResults('budgetResults', `
+                <div class="result-item">
+                    <span class="result-label">Total Expenses:</span>
+                    <span class="result-value">${formatCurrency(totalExpenses)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Remaining/Savings:</span>
+                    <span class="result-value">${formatCurrency(remaining)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Savings Rate:</span>
+                    <span class="result-value">${formatPercentage(savingsRate)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Housing Ratio:</span>
+                    <span class="result-value">${formatPercentage(housingRatio)}</span>
+                </div>
+            `);
+        }
+
+        // Tax Calculator (Simplified 2024 brackets)
+        function calculateTax() {
+            const annualIncome = parseFloat(document.getElementById('annualIncome').value);
+            const filingStatus = document.getElementById('filingStatus').value;
+            const deductions = parseFloat(document.getElementById('deductions').value);
+
+            const taxableIncome = Math.max(0, annualIncome - deductions);
+
+            // 2024 tax brackets (simplified)
+            let tax = 0;
+            let brackets;
+
+            if (filingStatus === 'single') {
+                brackets = [
+                    { limit: 11600, rate: 0.10 },
+                    { limit: 47150, rate: 0.12 },
+                    { limit: 100525, rate: 0.22 },
+                    { limit: 191950, rate: 0.24 },
+                    { limit: 243725, rate: 0.32 },
+                    { limit: 609350, rate: 0.35 },
+                    { limit: Infinity, rate: 0.37 }
+                ];
+            } else if (filingStatus === 'married') {
+                brackets = [
+                    { limit: 23200, rate: 0.10 },
+                    { limit: 94300, rate: 0.12 },
+                    { limit: 201050, rate: 0.22 },
+                    { limit: 383900, rate: 0.24 },
+                    { limit: 487450, rate: 0.32 },
+                    { limit: 731200, rate: 0.35 },
+                    { limit: Infinity, rate: 0.37 }
+                ];
+            } else {
+                brackets = [
+                    { limit: 16550, rate: 0.10 },
+                    { limit: 63100, rate: 0.12 },
+                    { limit: 100500, rate: 0.22 },
+                    { limit: 191950, rate: 0.24 },
+                    { limit: 243700, rate: 0.32 },
+                    { limit: 609350, rate: 0.35 },
+                    { limit: Infinity, rate: 0.37 }
+                ];
+            }
+
+            let previousLimit = 0;
+            for (const bracket of brackets) {
+                if (taxableIncome <= bracket.limit) {
+                    tax += (taxableIncome - previousLimit) * bracket.rate;
+                    break;
+                } else {
+                    tax += (bracket.limit - previousLimit) * bracket.rate;
+                    previousLimit = bracket.limit;
+                }
+            }
+
+            const effectiveRate = (tax / annualIncome) * 100;
+            const takeHome = annualIncome - tax;
+
+            showResults('taxResults', `
+                <div class="result-item">
+                    <span class="result-label">Taxable Income:</span>
+                    <span class="result-value">${formatCurrency(taxableIncome)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Estimated Tax:</span>
+                    <span class="result-value">${formatCurrency(tax)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Effective Rate:</span>
+                    <span class="result-value">${formatPercentage(effectiveRate)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Take Home:</span>
+                    <span class="result-value">${formatCurrency(takeHome)}</span>
+                </div>
+            `);
+        }
+
+        // 401(k) Calculator
+        function calculate401k() {
+            const current401k = parseFloat(document.getElementById('current401k').value);
+            const annualSalary = parseFloat(document.getElementById('annualSalary').value);
+            const contribution401k = parseFloat(document.getElementById('contribution401k').value) / 100;
+            const employerMatch = parseFloat(document.getElementById('employerMatch').value) / 100;
+            const return401k = parseFloat(document.getElementById('401kReturn').value) / 100;
+            const years401k = parseInt(document.getElementById('401kYears').value);
+
+            const annualContribution = annualSalary * contribution401k;
+            const annualEmployerMatch = annualSalary * Math.min(employerMatch, contribution401k);
+            const totalAnnualContribution = annualContribution + annualEmployerMatch;
+
+            const monthlyRate = return401k / 12;
+            const numberOfMonths = years401k * 12;
+            const monthlyContribution = totalAnnualContribution / 12;
+
+            let futureValue = current401k * Math.pow(1 + monthlyRate, numberOfMonths);
+
+            if (monthlyContribution > 0) {
+                futureValue += monthlyContribution * ((Math.pow(1 + monthlyRate, numberOfMonths) - 1) / monthlyRate);
+            }
+
+            const totalContributions = current401k + (totalAnnualContribution * years401k);
+            const totalEmployerContributions = annualEmployerMatch * years401k;
+            const earnings = futureValue - totalContributions;
+
+            showResults('401kResults', `
+                <div class="result-item">
+                    <span class="result-label">401(k) Balance at Retirement:</span>
+                    <span class="result-value">${formatCurrency(futureValue)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Your Contributions:</span>
+                    <span class="result-value">${formatCurrency(current401k + (annualContribution * years401k))}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Employer Match:</span>
+                    <span class="result-value">${formatCurrency(totalEmployerContributions)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Investment Earnings:</span>
+                    <span class="result-value">${formatCurrency(earnings)}</span>
+                </div>
+            `);
+        }
+
+        // Tip Calculator
+        function calculateTip() {
+            const billAmount = parseFloat(document.getElementById('billAmount').value);
+            const tipPercentage = parseFloat(document.getElementById('tipPercentage').value) / 100;
+            const numberOfPeople = parseInt(document.getElementById('numberOfPeople').value);
+
+            const tipAmount = billAmount * tipPercentage;
+            const totalAmount = billAmount + tipAmount;
+            const perPerson = totalAmount / numberOfPeople;
+            const tipPerPerson = tipAmount / numberOfPeople;
+
+            showResults('tipResults', `
+                <div class="result-item">
+                    <span class="result-label">Tip Amount:</span>
+                    <span class="result-value">${formatCurrencyDecimals(tipAmount)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Bill:</span>
+                    <span class="result-value">${formatCurrencyDecimals(totalAmount)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Per Person:</span>
+                    <span class="result-value">${formatCurrencyDecimals(perPerson)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Tip Per Person:</span>
+                    <span class="result-value">${formatCurrencyDecimals(tipPerPerson)}</span>
+                </div>
+            `);
+        }
+
+        // Auto-calculate on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateRetirement();
+        });
     </script>
 </body>
 </html>
