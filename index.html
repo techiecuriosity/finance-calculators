@@ -415,6 +415,76 @@
             z-index: 10;
             margin-bottom: 5px;
         }
+
+        /* Income/Expense Stream Cards */
+        .stream-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .stream-card.income {
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .stream-card.expense {
+            border-left: 4px solid #ef4444;
+        }
+
+        .stream-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stream-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .remove-stream {
+            background: #fee;
+            color: #dc2626;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .remove-stream:hover {
+            background: #fca5a5;
+        }
+
+        .success-meter {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .success-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .success-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -458,17 +528,10 @@
                 <div class="input-grid">
                     <div class="form-field">
                         <label for="savingsRate">
-                            Annual Savings Rate
+                            Annual Savings Rate (%)
                             <span class="tooltip" data-tooltip="Percentage of income saved each year">ⓘ</span>
                         </label>
                         <input type="number" id="savingsRate" value="25" min="0" max="100" step="1">
-                    </div>
-                    <div class="form-field">
-                        <label for="investmentReturn">
-                            Expected Annual Return (%)
-                            <span class="tooltip" data-tooltip="Historical stock market average is ~7-10%">ⓘ</span>
-                        </label>
-                        <input type="number" id="investmentReturn" value="7" min="0" max="30" step="0.5">
                     </div>
                     <div class="form-field">
                         <label for="inflationRate">
@@ -484,12 +547,86 @@
                         </label>
                         <input type="number" id="withdrawalRate" value="4" min="1" max="10" step="0.25">
                     </div>
+                    <div class="form-field">
+                        <label for="taxRate">
+                            Tax Rate on Withdrawals (%)
+                            <span class="tooltip" data-tooltip="Federal + state tax on retirement withdrawals">ⓘ</span>
+                        </label>
+                        <input type="number" id="taxRate" value="15" min="0" max="50" step="1">
+                    </div>
+                </div>
+
+                <!-- Asset Allocation -->
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-light); border-radius: 8px;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-dark);">
+                        Asset Allocation
+                        <span class="tooltip" data-tooltip="How your portfolio is divided between asset types">ⓘ</span>
+                    </h3>
+                    <div class="input-grid">
+                        <div class="form-field">
+                            <label for="stockAllocation">Stocks (%)</label>
+                            <input type="number" id="stockAllocation" value="70" min="0" max="100" step="5">
+                        </div>
+                        <div class="form-field">
+                            <label for="bondAllocation">Bonds (%)</label>
+                            <input type="number" id="bondAllocation" value="25" min="0" max="100" step="5">
+                        </div>
+                        <div class="form-field">
+                            <label for="cashAllocation">Cash (%)</label>
+                            <input type="number" id="cashAllocation" value="5" min="0" max="100" step="5">
+                        </div>
+                        <div class="form-field">
+                            <label style="color: var(--text-light); font-size: 0.9rem;">
+                                Total: <span id="allocationTotal" style="font-weight: 600; color: var(--primary-color);">100%</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="input-grid" style="margin-top: 1rem;">
+                        <div class="form-field">
+                            <label for="stockReturn">Expected Stock Return (%)</label>
+                            <input type="number" id="stockReturn" value="10" min="0" max="30" step="0.5">
+                        </div>
+                        <div class="form-field">
+                            <label for="bondReturn">Expected Bond Return (%)</label>
+                            <input type="number" id="bondReturn" value="5" min="0" max="20" step="0.5">
+                        </div>
+                        <div class="form-field">
+                            <label for="cashReturn">Expected Cash Return (%)</label>
+                            <input type="number" id="cashReturn" value="2" min="0" max="10" step="0.5">
+                        </div>
+                        <div class="form-field">
+                            <label style="color: var(--text-light); font-size: 0.9rem;">
+                                Blended Return: <span id="blendedReturn" style="font-weight: 600; color: var(--secondary-color);">7.9%</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Section 3: Retirement Goals -->
+            <!-- Section 3: Additional Income & Expenses -->
             <div class="section">
-                <h2 class="section-header">3. Retirement Goals</h2>
+                <h2 class="section-header">3. Additional Income & Expenses (Optional)</h2>
+                <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.95rem;">
+                    Add future income sources (Social Security, pensions, rental income) or expenses (healthcare, travel)
+                </p>
+
+                <div id="incomeExpenseStreams">
+                    <!-- Income/Expense rows will be added dynamically -->
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" onclick="addIncomeExpenseStream('income')" style="padding: 0.75rem 1.5rem; background: var(--secondary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+                        + Add Income Stream
+                    </button>
+                    <button type="button" onclick="addIncomeExpenseStream('expense')" style="padding: 0.75rem 1.5rem; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+                        + Add Expense Stream
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section 4: Retirement Goals -->
+            <div class="section">
+                <h2 class="section-header">4. Retirement Goals</h2>
                 <div class="input-grid">
                     <div class="form-field">
                         <label for="targetAge">Target Retirement Age (Optional)</label>
@@ -622,6 +759,8 @@
         // Store chart instances globally to destroy them on recalculation
         let portfolioChartInstance = null;
         let contributionsChartInstance = null;
+        let streamCounter = 0;
+        let incomeExpenseStreams = [];
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', {
@@ -632,6 +771,102 @@
             }).format(amount);
         }
 
+        // Update allocation total and blended return
+        function updateAllocationCalculations() {
+            const stock = parseFloat(document.getElementById('stockAllocation').value) || 0;
+            const bond = parseFloat(document.getElementById('bondAllocation').value) || 0;
+            const cash = parseFloat(document.getElementById('cashAllocation').value) || 0;
+            const total = stock + bond + cash;
+
+            document.getElementById('allocationTotal').textContent = total + '%';
+            document.getElementById('allocationTotal').style.color = total === 100 ? 'var(--secondary-color)' : '#ef4444';
+
+            // Calculate blended return
+            const stockReturn = parseFloat(document.getElementById('stockReturn').value) || 0;
+            const bondReturn = parseFloat(document.getElementById('bondReturn').value) || 0;
+            const cashReturn = parseFloat(document.getElementById('cashReturn').value) || 0;
+
+            const blended = (stock * stockReturn + bond * bondReturn + cash * cashReturn) / 100;
+            document.getElementById('blendedReturn').textContent = blended.toFixed(2) + '%';
+        }
+
+        // Add income or expense stream
+        function addIncomeExpenseStream(type) {
+            streamCounter++;
+            const id = `stream_${streamCounter}`;
+            const container = document.getElementById('incomeExpenseStreams');
+
+            const streamCard = document.createElement('div');
+            streamCard.className = `stream-card ${type}`;
+            streamCard.id = id;
+
+            streamCard.innerHTML = `
+                <div class="stream-header">
+                    <input type="text" class="stream-title" placeholder="${type === 'income' ? 'e.g., Social Security' : 'e.g., Healthcare'}"
+                           style="border: none; outline: none; background: transparent; width: 60%;" />
+                    <button type="button" class="remove-stream" onclick="removeStream('${id}')">Remove</button>
+                </div>
+                <div class="input-grid">
+                    <div class="form-field input-prefix">
+                        <label>Annual Amount ($)</label>
+                        <input type="number" class="stream-amount" value="0" min="0" step="1000">
+                    </div>
+                    <div class="form-field">
+                        <label>Starts at Age</label>
+                        <input type="number" class="stream-start-age" value="65" min="18" max="100">
+                    </div>
+                    <div class="form-field">
+                        <label>Ends at Age (Optional)</label>
+                        <input type="number" class="stream-end-age" placeholder="Lifetime" min="18" max="120">
+                    </div>
+                    <div class="form-field">
+                        <label>Annual Growth Rate (%)</label>
+                        <input type="number" class="stream-growth" value="0" min="-10" max="20" step="0.5">
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(streamCard);
+
+            incomeExpenseStreams.push({
+                id: id,
+                type: type
+            });
+        }
+
+        function removeStream(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.remove();
+                incomeExpenseStreams = incomeExpenseStreams.filter(s => s.id !== id);
+            }
+        }
+
+        // Get all income/expense streams data
+        function getIncomeExpenseStreams() {
+            const streams = [];
+            incomeExpenseStreams.forEach(stream => {
+                const card = document.getElementById(stream.id);
+                if (card) {
+                    const name = card.querySelector('.stream-title').value;
+                    const amount = parseFloat(card.querySelector('.stream-amount').value) || 0;
+                    const startAge = parseInt(card.querySelector('.stream-start-age').value);
+                    const endAge = parseInt(card.querySelector('.stream-end-age').value) || 120;
+                    const growth = parseFloat(card.querySelector('.stream-growth').value) || 0;
+
+                    streams.push({
+                        type: stream.type,
+                        name: name || (stream.type === 'income' ? 'Income Stream' : 'Expense Stream'),
+                        amount: amount,
+                        startAge: startAge,
+                        endAge: endAge,
+                        growth: growth / 100
+                    });
+                }
+            });
+            return streams;
+        }
+
         function calculateRetirement() {
             // Get input values
             const currentAge = parseInt(document.getElementById('currentAge').value);
@@ -639,11 +874,24 @@
             const annualIncome = parseFloat(document.getElementById('annualIncome').value);
             const annualExpenses = parseFloat(document.getElementById('annualExpenses').value);
             const savingsRate = parseFloat(document.getElementById('savingsRate').value) / 100;
-            const investmentReturn = parseFloat(document.getElementById('investmentReturn').value) / 100;
             const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
             const withdrawalRate = parseFloat(document.getElementById('withdrawalRate').value) / 100;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
             const targetAge = parseInt(document.getElementById('targetAge').value) || null;
             const retirementExpenses = parseFloat(document.getElementById('retirementExpenses').value) || annualExpenses;
+
+            // Get blended investment return from asset allocation
+            const stockAlloc = parseFloat(document.getElementById('stockAllocation').value) / 100;
+            const bondAlloc = parseFloat(document.getElementById('bondAllocation').value) / 100;
+            const cashAlloc = parseFloat(document.getElementById('cashAllocation').value) / 100;
+            const stockReturn = parseFloat(document.getElementById('stockReturn').value) / 100;
+            const bondReturn = parseFloat(document.getElementById('bondReturn').value) / 100;
+            const cashReturn = parseFloat(document.getElementById('cashReturn').value) / 100;
+
+            const investmentReturn = (stockAlloc * stockReturn) + (bondAlloc * bondReturn) + (cashAlloc * cashReturn);
+
+            // Get additional income/expense streams
+            const streams = getIncomeExpenseStreams();
 
             // Validation
             if (isNaN(currentAge) || isNaN(currentSavings) || isNaN(annualIncome) || isNaN(annualExpenses)) {
@@ -660,8 +908,14 @@
             const annualSavings = annualIncome * savingsRate;
             const monthlySavings = annualSavings / 12;
 
-            // Calculate FIRE number (25x annual expenses based on 4% rule)
-            const fireNumber = retirementExpenses / withdrawalRate;
+            // Validate asset allocation
+            if (Math.abs((stockAlloc + bondAlloc + cashAlloc) - 1) > 0.01) {
+                alert('Asset allocation must total 100%');
+                return;
+            }
+
+            // Calculate FIRE number (accounting for taxes)
+            const fireNumber = (retirementExpenses / (1 - taxRate)) / withdrawalRate;
 
             // Calculate years to retirement
             let portfolio = currentSavings;
@@ -693,6 +947,21 @@
                 // Add annual savings
                 portfolio += annualSavings;
                 totalContributions += annualSavings;
+
+                // Add/subtract income/expense streams for this age
+                streams.forEach(stream => {
+                    if (age >= stream.startAge && age <= stream.endAge) {
+                        const yearsActive = age - stream.startAge;
+                        const adjustedAmount = stream.amount * Math.pow(1 + stream.growth, yearsActive);
+
+                        if (stream.type === 'income') {
+                            portfolio += adjustedAmount;
+                            totalContributions += adjustedAmount;
+                        } else {
+                            portfolio -= adjustedAmount;
+                        }
+                    }
+                });
 
                 // Calculate investment return
                 const investmentGain = portfolio * investmentReturn;
@@ -969,6 +1238,11 @@
         const inputs = document.querySelectorAll('input');
         inputs.forEach(input => {
             input.addEventListener('change', () => {
+                // Update allocation calculations when those inputs change
+                if (input.id.includes('Allocation') || input.id.includes('Return')) {
+                    updateAllocationCalculations();
+                }
+
                 // Only auto-calculate if results are already visible
                 if (!document.getElementById('results').classList.contains('hidden')) {
                     calculateRetirement();
@@ -1005,7 +1279,10 @@
         });
 
         // Load on page load
-        document.addEventListener('DOMContentLoaded', loadInputs);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadInputs();
+            updateAllocationCalculations();
+        });
     </script>
 </body>
 </html>
