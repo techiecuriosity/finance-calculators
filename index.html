@@ -33,6 +33,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -538,6 +541,18 @@
                 <div class="progress-fill" id="progressBar"></div>
             </div>
 
+            <!-- Portfolio Growth Chart -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">Portfolio Growth Over Time</h3>
+                <canvas id="portfolioChart" style="max-height: 400px;"></canvas>
+            </div>
+
+            <!-- Contributions vs Returns Chart -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">Contributions vs Investment Returns</h3>
+                <canvas id="contributionsChart" style="max-height: 350px;"></canvas>
+            </div>
+
             <!-- Breakdown Table -->
             <div class="chart-container">
                 <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">Year-by-Year Breakdown</h3>
@@ -604,6 +619,10 @@
     </footer>
 
     <script>
+        // Store chart instances globally to destroy them on recalculation
+        let portfolioChartInstance = null;
+        let contributionsChartInstance = null;
+
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -649,7 +668,23 @@
             let age = currentAge;
             let year = 0;
             const breakdown = [];
+            const chartData = {
+                years: [],
+                ages: [],
+                portfolioValues: [],
+                totalContributions: [],
+                totalReturns: []
+            };
             const maxYears = 50; // Safety limit
+            let totalContributions = currentSavings;
+            let totalReturns = 0;
+
+            // Add initial values
+            chartData.years.push(0);
+            chartData.ages.push(currentAge);
+            chartData.portfolioValues.push(currentSavings);
+            chartData.totalContributions.push(currentSavings);
+            chartData.totalReturns.push(0);
 
             while (portfolio < fireNumber && year < maxYears) {
                 year++;
@@ -657,12 +692,21 @@
 
                 // Add annual savings
                 portfolio += annualSavings;
+                totalContributions += annualSavings;
 
                 // Calculate investment return
                 const investmentGain = portfolio * investmentReturn;
                 portfolio += investmentGain;
+                totalReturns += investmentGain;
 
-                // Store breakdown
+                // Store chart data for every year (we'll sample for display)
+                chartData.years.push(year);
+                chartData.ages.push(age);
+                chartData.portfolioValues.push(portfolio);
+                chartData.totalContributions.push(totalContributions);
+                chartData.totalReturns.push(totalReturns);
+
+                // Store breakdown for table
                 if (year <= 40 || age % 5 === 0) { // Show first 40 years, then every 5 years
                     breakdown.push({
                         age: age,
@@ -705,9 +749,220 @@
                 tbody.appendChild(tr);
             });
 
+            // Sample data for charts (show every year if < 30 years, else every 2-3 years)
+            const sampleInterval = chartData.years.length <= 30 ? 1 : Math.ceil(chartData.years.length / 30);
+            const sampledData = {
+                labels: [],
+                portfolioValues: [],
+                contributions: [],
+                returns: []
+            };
+
+            for (let i = 0; i < chartData.years.length; i += sampleInterval) {
+                sampledData.labels.push(`Age ${chartData.ages[i]}`);
+                sampledData.portfolioValues.push(Math.round(chartData.portfolioValues[i]));
+                sampledData.contributions.push(Math.round(chartData.totalContributions[i]));
+                sampledData.returns.push(Math.round(chartData.totalReturns[i]));
+            }
+
+            // Create Portfolio Growth Chart
+            createPortfolioChart(sampledData, fireNumber);
+
+            // Create Contributions vs Returns Chart
+            createContributionsChart(sampledData);
+
             // Show results
             document.getElementById('results').classList.remove('hidden');
             document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function createPortfolioChart(data, fireNumber) {
+            // Destroy existing chart if it exists
+            if (portfolioChartInstance) {
+                portfolioChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            portfolioChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'Total Portfolio',
+                            data: data.portfolioValues,
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'FIRE Number',
+                            data: Array(data.labels.length).fill(Math.round(fireNumber)),
+                            borderColor: '#10b981',
+                            backgroundColor: 'transparent',
+                            borderDash: [10, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += formatCurrency(context.parsed.y);
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createContributionsChart(data) {
+            // Destroy existing chart if it exists
+            if (contributionsChartInstance) {
+                contributionsChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('contributionsChart').getContext('2d');
+            contributionsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'Total Contributions',
+                            data: data.contributions,
+                            backgroundColor: '#60a5fa',
+                            borderColor: '#2563eb',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Investment Returns',
+                            data: data.returns,
+                            backgroundColor: '#34d399',
+                            borderColor: '#10b981',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += formatCurrency(context.parsed.y);
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         // Auto-calculate on input change for better UX
