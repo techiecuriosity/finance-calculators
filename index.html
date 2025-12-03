@@ -538,16 +538,58 @@
                         <input type="number" id="currentAge" value="30" min="18" max="100" required>
                     </div>
                     <div class="form-field input-prefix">
-                        <label for="currentSavings">Current Savings</label>
-                        <input type="number" id="currentSavings" value="50000" min="0" step="1000" required>
-                    </div>
-                    <div class="form-field input-prefix">
                         <label for="annualIncome">Annual Income</label>
                         <input type="number" id="annualIncome" value="80000" min="0" step="1000" required>
                     </div>
                     <div class="form-field input-prefix">
                         <label for="annualExpenses">Annual Expenses</label>
                         <input type="number" id="annualExpenses" value="50000" min="0" step="1000" required>
+                    </div>
+                </div>
+
+                <!-- Tax Bucket Breakdown -->
+                <div style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 8px; border: 2px solid #f59e0b;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #92400e; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>💰</span> Current Savings by Tax Treatment
+                        <span class="tooltip" data-tooltip="$1M in Roth ≠ $1M in Traditional 401(k). Account for taxes to get accurate FIRE number.">ⓘ</span>
+                    </h3>
+                    <p style="font-size: 0.85rem; color: #78350f; margin-bottom: 1rem;">
+                        <strong>Critical:</strong> $100K in a Roth IRA is worth more than $100K in a Traditional 401(k) because of taxes. Separate your accounts for accurate planning.
+                    </p>
+                    <div class="input-grid">
+                        <div class="form-field input-prefix">
+                            <label for="preTaxSavings">
+                                Pre-Tax Savings
+                                <span class="tooltip" data-tooltip="Traditional 401(k), Traditional IRA - you'll pay taxes on withdrawals">ⓘ</span>
+                            </label>
+                            <input type="number" id="preTaxSavings" value="30000" min="0" step="1000" oninput="updateTotalSavings()">
+                            <div style="font-size: 0.75rem; color: #78350f; margin-top: 0.25rem;">After-tax value: <span id="preTaxAfterTax">$--</span></div>
+                        </div>
+                        <div class="form-field input-prefix">
+                            <label for="rothSavings">
+                                Roth Savings
+                                <span class="tooltip" data-tooltip="Roth 401(k), Roth IRA - already taxed, grows tax-free">ⓘ</span>
+                            </label>
+                            <input type="number" id="rothSavings" value="15000" min="0" step="1000" oninput="updateTotalSavings()">
+                            <div style="font-size: 0.75rem; color: #15803d; margin-top: 0.25rem;">Tax-free in retirement</div>
+                        </div>
+                        <div class="form-field input-prefix">
+                            <label for="taxableSavings">
+                                Taxable Brokerage
+                                <span class="tooltip" data-tooltip="Regular brokerage account - capital gains tax on growth">ⓘ</span>
+                            </label>
+                            <input type="number" id="taxableSavings" value="5000" min="0" step="1000" oninput="updateTotalSavings()">
+                            <div style="font-size: 0.75rem; color: #ca8a04; margin-top: 0.25rem;">~15% capital gains tax</div>
+                        </div>
+                        <div class="form-field">
+                            <label style="color: var(--text-dark); font-weight: 600;">
+                                Total Current Savings
+                            </label>
+                            <div id="totalCurrentSavings" style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin-top: 0.5rem;">$50,000</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">
+                                Effective after-tax value: <span id="effectiveSavings" style="font-weight: 600;">$--</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1046,6 +1088,35 @@
                 maximumFractionDigits: 0
             }).format(amount);
         }
+
+        // Update tax bucket totals and effective value
+        function updateTotalSavings() {
+            const preTax = parseFloat(document.getElementById('preTaxSavings').value) || 0;
+            const roth = parseFloat(document.getElementById('rothSavings').value) || 0;
+            const taxable = parseFloat(document.getElementById('taxableSavings').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100 || 0.15;
+
+            // Calculate after-tax values
+            const preTaxAfterTax = preTax * (1 - taxRate);
+            const taxableAfterTax = taxable * 0.85; // Assume 15% capital gains
+            const effectiveTotal = preTaxAfterTax + roth + taxableAfterTax;
+            const nominalTotal = preTax + roth + taxable;
+
+            // Update UI
+            document.getElementById('preTaxAfterTax').textContent = formatCurrency(preTaxAfterTax);
+            document.getElementById('totalCurrentSavings').textContent = formatCurrency(nominalTotal);
+            document.getElementById('effectiveSavings').textContent = formatCurrency(effectiveTotal);
+
+            // Update hidden currentSavings field for calculations
+            if (document.getElementById('currentSavings')) {
+                document.getElementById('currentSavings').value = effectiveTotal;
+            }
+        }
+
+        // Initialize tax bucket calculations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotalSavings();
+        });
 
         // Update allocation total and blended return
         function updateAllocationCalculations() {
