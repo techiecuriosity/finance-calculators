@@ -1007,9 +1007,35 @@
                 </div>
             </div>
 
+            <!-- Inflation Toggle -->
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border: 2px solid #f59e0b; text-align: center;">
+                <h3 style="color: #92400e; margin: 0 0 1rem 0; font-size: 1.1rem;">
+                    💵 Display Values In:
+                </h3>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="toggleInflation('nominal')" id="btn-nominal" class="inflation-btn" style="padding: 0.75rem 2rem; background: var(--primary-color); border: 2px solid var(--primary-color); border-radius: 8px; cursor: pointer; font-weight: 600; color: white; font-size: 1rem;">
+                        Nominal Dollars
+                    </button>
+                    <button onclick="toggleInflation('real')" id="btn-real" class="inflation-btn" style="padding: 0.75rem 2rem; background: white; border: 2px solid var(--primary-color); border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--primary-color); font-size: 1rem;">
+                        Today's Dollars (Inflation-Adjusted)
+                    </button>
+                </div>
+                <div id="inflationExplanation" style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.7); border-radius: 6px; text-align: left;">
+                    <p style="font-size: 0.9rem; color: #78350f; margin: 0;">
+                        <strong>Nominal Dollars:</strong> Shows actual dollar amounts you'll see in your account. Example: $2M in 2045.
+                    </p>
+                    <p style="font-size: 0.9rem; color: #78350f; margin: 0.5rem 0 0 0;">
+                        💡 <strong>Tip:</strong> Switch to "Today's Dollars" to see what your future savings will actually buy in today's purchasing power. A $2M portfolio in 2045 might only buy what $1.2M buys today due to inflation.
+                    </p>
+                </div>
+            </div>
+
             <!-- Portfolio Growth Chart -->
             <div class="chart-container">
-                <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">Portfolio Growth Over Time</h3>
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                    Portfolio Growth Over Time
+                    <span id="chartInflationLabel" style="font-size: 0.9rem; color: var(--text-light); font-weight: normal;">(Nominal Dollars)</span>
+                </h3>
                 <canvas id="portfolioChart" style="max-height: 400px;"></canvas>
             </div>
 
@@ -1382,6 +1408,8 @@
             pessimistic: null
         };
         let currentScenario = 'base';
+        let inflationMode = 'nominal'; // 'nominal' or 'real'
+        let inflationRate = 0.03; // Store for calculations
 
         function calculateRetirement() {
             // Get input values
@@ -1635,8 +1663,18 @@
                 sampledData.returns.push(Math.round(chartData.totalReturns[i]));
             }
 
-            // Create Portfolio Growth Chart
-            createPortfolioChart(sampledData, result.fireNumber);
+            // Calculate CoastFIRE number for chart milestone
+            const investmentReturn = scenarioResults.base ?
+                ((parseFloat(document.getElementById('stockAllocation').value) / 100) * (parseFloat(document.getElementById('stockReturn').value) / 100) +
+                 (parseFloat(document.getElementById('bondAllocation').value) / 100) * (parseFloat(document.getElementById('bondReturn').value) / 100) +
+                 (parseFloat(document.getElementById('cashAllocation').value) / 100) * (parseFloat(document.getElementById('cashReturn').value) / 100)) : 0.07;
+            const coastFireNumber = result.fireNumber / Math.pow(1 + investmentReturn, result.year);
+
+            // Store inflation rate for toggle
+            inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100 || 0.03;
+
+            // Create Portfolio Growth Chart with CoastFIRE milestone
+            createPortfolioChart(sampledData, result.fireNumber, coastFireNumber);
 
             // Create Contributions vs Returns Chart
             createContributionsChart(sampledData);
@@ -1873,40 +1911,98 @@
             probabilityDescElement.style.color = color;
         }
 
-        function createPortfolioChart(data, fireNumber) {
+        function toggleInflation(mode) {
+            inflationMode = mode;
+
+            // Update button styles
+            const nominalBtn = document.getElementById('btn-nominal');
+            const realBtn = document.getElementById('btn-real');
+
+            if (mode === 'nominal') {
+                nominalBtn.style.background = 'var(--primary-color)';
+                nominalBtn.style.color = 'white';
+                realBtn.style.background = 'white';
+                realBtn.style.color = 'var(--primary-color)';
+                document.getElementById('chartInflationLabel').textContent = '(Nominal Dollars)';
+                document.getElementById('inflationExplanation').querySelector('p').innerHTML =
+                    '<strong>Nominal Dollars:</strong> Shows actual dollar amounts you\'ll see in your account. Example: $2M in 2045.';
+            } else {
+                nominalBtn.style.background = 'white';
+                nominalBtn.style.color = 'var(--primary-color)';
+                realBtn.style.background = 'var(--primary-color)';
+                realBtn.style.color = 'white';
+                document.getElementById('chartInflationLabel').textContent = '(Today\'s Dollars - Inflation Adjusted)';
+                document.getElementById('inflationExplanation').querySelector('p').innerHTML =
+                    '<strong>Today\'s Dollars:</strong> Shows what your savings will buy in today\'s purchasing power. This removes the "inflation illusion" - a $2M portfolio in 2045 might only buy what $1.2M buys today (at 3% inflation).';
+            }
+
+            // Redraw chart with inflation-adjusted values
+            displayScenario(currentScenario);
+        }
+
+        function createPortfolioChart(data, fireNumber, coastFireNumber) {
             // Destroy existing chart if it exists
             if (portfolioChartInstance) {
                 portfolioChartInstance.destroy();
             }
 
+            // Apply inflation adjustment if in "real" mode
+            let adjustedPortfolioValues = data.portfolioValues;
+            let adjustedFireNumber = fireNumber;
+            let adjustedCoastFire = coastFireNumber;
+
+            if (inflationMode === 'real') {
+                const currentAge = parseInt(document.getElementById('currentAge').value);
+                adjustedPortfolioValues = data.portfolioValues.map((value, index) => {
+                    const yearsFromNow = index;
+                    return value / Math.pow(1 + inflationRate, yearsFromNow);
+                });
+                adjustedFireNumber = fireNumber / Math.pow(1 + inflationRate, data.portfolioValues.length - 1);
+                adjustedCoastFire = coastFireNumber;
+            }
+
             const ctx = document.getElementById('portfolioChart').getContext('2d');
+
+            // Create datasets with milestones
+            const datasets = [
+                {
+                    label: 'Total Portfolio',
+                    data: adjustedPortfolioValues,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 0,
+                    pointHoverRadius: 6
+                },
+                {
+                    label: 'FIRE Number (Full FI)',
+                    data: Array(data.labels.length).fill(Math.round(adjustedFireNumber)),
+                    borderColor: '#10b981',
+                    backgroundColor: 'transparent',
+                    borderDash: [10, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                },
+                {
+                    label: 'CoastFIRE Milestone',
+                    data: Array(data.labels.length).fill(Math.round(adjustedCoastFire)),
+                    borderColor: '#0ea5e9',
+                    backgroundColor: 'transparent',
+                    borderDash: [5, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                }
+            ];
+
             portfolioChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: data.labels,
-                    datasets: [
-                        {
-                            label: 'Total Portfolio',
-                            data: data.portfolioValues,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            borderWidth: 3,
-                            pointRadius: 0,
-                            pointHoverRadius: 6
-                        },
-                        {
-                            label: 'FIRE Number',
-                            data: Array(data.labels.length).fill(Math.round(fireNumber)),
-                            borderColor: '#10b981',
-                            backgroundColor: 'transparent',
-                            borderDash: [10, 5],
-                            borderWidth: 2,
-                            pointRadius: 0,
-                            fill: false
-                        }
-                    ]
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
