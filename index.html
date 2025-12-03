@@ -778,6 +778,51 @@
                 </div>
             </div>
 
+            <!-- CoastFIRE Calculator -->
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 2rem; border-radius: 10px; margin: 2rem 0; border: 2px solid #0ea5e9;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 2rem;">🏖️</span>
+                    <div>
+                        <h3 style="color: #075985; margin: 0; font-size: 1.2rem;">CoastFIRE: When Can You Stop Saving?</h3>
+                        <p style="color: #0c4a6e; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Stop contributing but keep working - let compound interest carry you to FIRE</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+                        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">CoastFIRE Age</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0ea5e9;" id="coastFireAge">--</div>
+                        <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Stop saving, keep working</div>
+                    </div>
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #10b981;">
+                        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">Portfolio at CoastFIRE</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #10b981;" id="coastFirePortfolio">$--</div>
+                        <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Last contribution needed</div>
+                    </div>
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">Years of "Freedom"</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #f59e0b;" id="coastFireYears">--</div>
+                        <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Work stress-free until FIRE</div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.8); padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                    <h4 style="color: #075985; margin: 0 0 0.75rem 0; font-size: 1rem;">💡 What is CoastFIRE?</h4>
+                    <p style="font-size: 0.9rem; color: #0c4a6e; margin: 0 0 0.75rem 0;">
+                        <strong>CoastFIRE means you've saved enough that compound interest alone will reach your FIRE number by retirement age</strong> - even if you never contribute another dollar. You can:
+                    </p>
+                    <ul style="font-size: 0.9rem; color: #0c4a6e; margin: 0 0 0.75rem 1.5rem;">
+                        <li><strong>Switch to a lower-stress job</strong> - Money is no longer the priority</li>
+                        <li><strong>Work part-time</strong> - Just cover expenses, no need to save</li>
+                        <li><strong>Pursue passion projects</strong> - Career changes become risk-free</li>
+                        <li><strong>Relax about savings</strong> - Your FIRE date is locked in</li>
+                    </ul>
+                    <p style="font-size: 0.85rem; color: #64748b; margin: 0;">
+                        <strong id="coastFireSummary">You're <span id="coastFireYearsAway">--</span> years away from CoastFIRE</strong>. Once you reach it, you'll have <span id="coastFireFreedom">--</span> years of financial freedom before full FIRE.
+                    </p>
+                </div>
+            </div>
+
             <!-- Scenario Comparison Summary -->
             <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border-left: 4px solid var(--primary-color);">
                 <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.1rem;">
@@ -1599,10 +1644,68 @@
             // Calculate and display success probability
             calculateSuccessProbability(result, scenarioType);
 
+            // Calculate and display CoastFIRE milestone
+            calculateCoastFIRE(result);
+
             // Show results (only on first calculation)
             if (!document.getElementById('results').classList.contains('hidden') === false) {
                 document.getElementById('results').classList.remove('hidden');
                 document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function calculateCoastFIRE(result) {
+            // CoastFIRE = amount needed now that will grow to FIRE number by retirement age
+            const currentAge = parseInt(document.getElementById('currentAge').value);
+            const fireNumber = result.fireNumber;
+            const investmentReturn = scenarioResults.base ?
+                ((parseFloat(document.getElementById('stockAllocation').value) / 100) * (parseFloat(document.getElementById('stockReturn').value) / 100) +
+                 (parseFloat(document.getElementById('bondAllocation').value) / 100) * (parseFloat(document.getElementById('bondReturn').value) / 100) +
+                 (parseFloat(document.getElementById('cashAllocation').value) / 100) * (parseFloat(document.getElementById('cashReturn').value) / 100)) : 0.07;
+
+            const yearsToFIRE = result.year;
+            const retirementAge = result.retirementAge;
+
+            // Calculate CoastFIRE number: how much you need TODAY for compound interest to reach FIRE number
+            const coastFireNumber = fireNumber / Math.pow(1 + investmentReturn, yearsToFIRE);
+
+            // Find when you'll reach CoastFIRE number
+            const currentSavings = parseFloat(document.getElementById('currentSavings').value) || 0;
+            const annualSavings = (parseFloat(document.getElementById('annualIncome').value) || 0) *
+                                  (parseFloat(document.getElementById('savingsRate').value) / 100 || 0);
+
+            let coastPortfolio = currentSavings;
+            let coastYear = 0;
+            let coastAge = currentAge;
+
+            // Simulate until we reach CoastFIRE number
+            while (coastPortfolio < coastFireNumber && coastYear < 50) {
+                coastYear++;
+                coastAge++;
+                coastPortfolio += annualSavings;
+                coastPortfolio *= (1 + investmentReturn);
+
+                if (coastPortfolio >= coastFireNumber) {
+                    break;
+                }
+            }
+
+            const coastFireYearsAway = coastYear;
+            const coastFireFreedomYears = retirementAge - coastAge;
+
+            // Update UI
+            document.getElementById('coastFireAge').textContent = coastAge;
+            document.getElementById('coastFirePortfolio').textContent = formatCurrency(coastFireNumber);
+            document.getElementById('coastFireYears').textContent = coastFireFreedomYears + ' years';
+            document.getElementById('coastFireYearsAway').textContent = coastFireYearsAway;
+            document.getElementById('coastFireFreedom').textContent = coastFireFreedomYears;
+
+            // Special case: already at CoastFIRE
+            if (currentSavings >= coastFireNumber) {
+                document.getElementById('coastFireAge').textContent = currentAge + ' (Now!)';
+                document.getElementById('coastFireYearsAway').textContent = '0';
+                document.getElementById('coastFireSummary').innerHTML =
+                    '<strong style="color: #10b981;">🎉 You\'ve reached CoastFIRE!</strong> You can stop saving and still reach FIRE by age ' + retirementAge + '. You have ' + (retirementAge - currentAge) + ' years of financial freedom.';
             }
         }
 
