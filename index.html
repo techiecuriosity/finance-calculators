@@ -681,11 +681,43 @@
         <div id="results" class="results-container hidden">
             <h2 class="results-header">Your Retirement Plan</h2>
 
+            <!-- Scenario Toggle -->
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 2px solid #f59e0b;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem;">📊</span>
+                    <div>
+                        <h3 style="color: #92400e; margin: 0; font-size: 1.1rem;">Scenario Analysis</h3>
+                        <p style="color: #78350f; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Compare optimistic, base-case, and pessimistic projections to understand uncertainty</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="switchScenario('optimistic')" id="btn-optimistic" class="scenario-btn" style="padding: 0.75rem 1.5rem; background: white; border: 2px solid #10b981; border-radius: 8px; cursor: pointer; font-weight: 500; color: #10b981; flex: 1; min-width: 150px;">
+                        <div style="font-size: 1.2rem;">📈</div>
+                        Optimistic
+                    </button>
+                    <button onclick="switchScenario('base')" id="btn-base" class="scenario-btn active" style="padding: 0.75rem 1.5rem; background: var(--primary-color); border: 2px solid var(--primary-color); border-radius: 8px; cursor: pointer; font-weight: 500; color: white; flex: 1; min-width: 150px;">
+                        <div style="font-size: 1.2rem;">📊</div>
+                        Base Case
+                    </button>
+                    <button onclick="switchScenario('pessimistic')" id="btn-pessimistic" class="scenario-btn" style="padding: 0.75rem 1.5rem; background: white; border: 2px solid #ef4444; border-radius: 8px; cursor: pointer; font-weight: 500; color: #ef4444; flex: 1; min-width: 150px;">
+                        <div style="font-size: 1.2rem;">📉</div>
+                        Pessimistic
+                    </button>
+                </div>
+            </div>
+
+            <!-- Current Scenario Label -->
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <span style="display: inline-block; padding: 0.5rem 1.5rem; background: var(--bg-light); border: 2px solid var(--primary-color); border-radius: 20px; font-weight: 600; color: var(--primary-color);">
+                    <span id="currentScenarioLabel">Base Case Scenario</span>
+                </span>
+            </div>
+
             <div class="results-grid">
                 <div class="result-card">
                     <div class="result-label">Years Until FIRE</div>
                     <div class="result-value" id="yearsToRetirement">--</div>
-                    <div class="result-subtext">Based on current trajectory</div>
+                    <div class="result-subtext">Based on <span id="scenarioDesc1">current</span> assumptions</div>
                 </div>
                 <div class="result-card">
                     <div class="result-label">Retirement Age</div>
@@ -701,6 +733,38 @@
                     <div class="result-label">Monthly Savings</div>
                     <div class="result-value" id="monthlySavings">$--</div>
                     <div class="result-subtext">Required contribution</div>
+                </div>
+            </div>
+
+            <!-- Scenario Comparison Summary -->
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 10px; margin: 2rem 0; border-left: 4px solid var(--primary-color);">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.1rem;">
+                    📊 Scenario Comparison
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="background: white; padding: 1rem; border-radius: 8px;">
+                        <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.25rem;">Optimistic (Best Case)</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; color: #10b981;" id="optimisticYears">-- years</div>
+                        <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem;">Higher returns, lower inflation</div>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px;">
+                        <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.25rem;">Base Case (Your Inputs)</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; color: var(--primary-color);" id="baseYears">-- years</div>
+                        <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem;">Your expected assumptions</div>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px;">
+                        <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.25rem;">Pessimistic (Worst Case)</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; color: #ef4444;" id="pessimisticYears">-- years</div>
+                        <div style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem;">Lower returns, higher inflation</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.7); border-radius: 6px;">
+                    <div style="font-size: 0.9rem; color: var(--text-dark); margin-bottom: 0.5rem;">
+                        <strong>Range of Outcomes:</strong> <span id="scenarioRange">-- to --</span> years
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-light);">
+                        This range helps you understand the uncertainty in your retirement timeline based on market performance and economic conditions.
+                    </div>
                 </div>
             </div>
 
@@ -802,13 +866,39 @@
     </main>
 
     <footer role="contentinfo">
+        <!-- Enhanced Disclaimer Section -->
+        <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 2rem; margin: 2rem auto; max-width: 900px; border-radius: 10px; border: 2px solid #ef4444; text-align: left;">
+            <h3 style="color: #991b1b; margin: 0 0 1rem 0; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.5rem;">⚠️</span>
+                Important Limitations & Disclaimers
+            </h3>
+            <div style="color: #7f1d1d; font-size: 0.95rem; line-height: 1.7;">
+                <p style="margin: 0 0 1rem 0;">
+                    <strong>This is a simplified planning tool, not comprehensive financial advice.</strong> It uses assumptions that may not reflect real-world complexity:
+                </p>
+                <ul style="margin: 0 0 1rem 1.5rem; padding: 0;">
+                    <li><strong>Constant returns:</strong> Actual markets are volatile with sequences of good/bad years that significantly impact outcomes</li>
+                    <li><strong>No major life events:</strong> Healthcare costs, family changes, job loss, or emergencies not modeled</li>
+                    <li><strong>Tax simplification:</strong> Real tax situations are complex with changing laws and brackets</li>
+                    <li><strong>Historical patterns:</strong> Past returns don't guarantee future performance</li>
+                    <li><strong>Inflation assumptions:</strong> Real inflation varies by category and region</li>
+                </ul>
+                <p style="margin: 0 0 1rem 0;">
+                    <strong>What this tool DOES provide:</strong> Scenario analysis to understand the range of possible outcomes based on different market conditions. The optimistic/base/pessimistic scenarios help you see uncertainty rather than rely on single-point estimates.
+                </p>
+                <p style="margin: 0; padding: 1rem; background: rgba(255,255,255,0.7); border-radius: 6px; border-left: 4px solid #ef4444;">
+                    <strong>⚡ Recommendation:</strong> Use this calculator as a starting point, then consult a qualified financial advisor who can model Monte Carlo simulations, sequence-of-returns risk, tax optimization, estate planning, and create a comprehensive retirement strategy tailored to your unique situation.
+                </p>
+            </div>
+        </div>
+
         <p><strong>Retirement Calculator Pro</strong> - Professional FIRE & Early Retirement Planning Tool</p>
         <p>© 2025 RetirementCalcPro.com - Trusted by 50,000+ users planning their financial independence</p>
         <p style="font-size: 0.85rem; margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto; color: var(--text-light);">
             <strong>Data Sources:</strong> Trinity Study (1998-2024), Historical S&P 500 returns (1871-2024), Federal Reserve inflation data
         </p>
         <p style="font-size: 0.85rem; margin-top: 0.5rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-            <strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only. Actual results will vary based on market performance, life changes, and economic conditions. Consult a qualified financial advisor for personalized guidance.
+            <strong>Educational Use Only:</strong> All projections are estimates. Actual results will vary based on market performance, life changes, and economic conditions.
         </p>
     </footer>
 
@@ -1040,6 +1130,14 @@
             window.open(`https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`, '_blank', 'width=550,height=420');
         }
 
+        // Store scenario results globally
+        let scenarioResults = {
+            optimistic: null,
+            base: null,
+            pessimistic: null
+        };
+        let currentScenario = 'base';
+
         function calculateRetirement() {
             // Get input values
             const currentAge = parseInt(document.getElementById('currentAge').value);
@@ -1090,7 +1188,44 @@
             // Calculate FIRE number (accounting for taxes)
             const fireNumber = (retirementExpenses / (1 - taxRate)) / withdrawalRate;
 
-            // Calculate years to retirement
+            // Calculate all three scenarios
+            const baseInputs = {
+                currentAge, currentSavings, annualSavings, investmentReturn,
+                fireNumber, streams
+            };
+
+            // Optimistic: 20% better returns, 20% lower inflation
+            const optimisticInputs = {
+                ...baseInputs,
+                investmentReturn: investmentReturn * 1.2,
+                fireNumber: fireNumber * 0.95  // Slightly lower due to lower inflation impact
+            };
+
+            // Pessimistic: 30% lower returns, 50% higher inflation, 10% higher expenses
+            const pessimisticInputs = {
+                ...baseInputs,
+                investmentReturn: investmentReturn * 0.7,
+                fireNumber: fireNumber * 1.15  // Higher due to inflation and expense safety margin
+            };
+
+            scenarioResults.base = calculateScenario(baseInputs);
+            scenarioResults.optimistic = calculateScenario(optimisticInputs);
+            scenarioResults.pessimistic = calculateScenario(pessimisticInputs);
+
+            // Update scenario comparison summary
+            document.getElementById('optimisticYears').textContent = scenarioResults.optimistic.year + ' years';
+            document.getElementById('baseYears').textContent = scenarioResults.base.year + ' years';
+            document.getElementById('pessimisticYears').textContent = scenarioResults.pessimistic.year + ' years';
+            document.getElementById('scenarioRange').textContent =
+                scenarioResults.optimistic.year + ' to ' + scenarioResults.pessimistic.year;
+
+            // Display the base case by default
+            displayScenario('base');
+        }
+
+        function calculateScenario(inputs) {
+            const { currentAge, currentSavings, annualSavings, investmentReturn, fireNumber, streams } = inputs;
+
             let portfolio = currentSavings;
             let age = currentAge;
             let year = 0;
@@ -1167,19 +1302,66 @@
 
             const retirementAge = currentAge + year;
             const currentProgress = (currentSavings / fireNumber) * 100;
+            const monthlySavings = annualSavings / 12;
+
+            return {
+                year,
+                retirementAge,
+                fireNumber,
+                monthlySavings,
+                currentProgress,
+                breakdown,
+                chartData,
+                totalContributions,
+                totalReturns
+            };
+        }
+
+        function displayScenario(scenarioType) {
+            currentScenario = scenarioType;
+            const result = scenarioResults[scenarioType];
+
+            if (!result) return;
+
+            // Update button styles
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.style.background = 'white';
+                btn.style.color = btn.id.includes('optimistic') ? '#10b981' :
+                                  btn.id.includes('pessimistic') ? '#ef4444' : 'var(--primary-color)';
+                btn.classList.remove('active');
+            });
+
+            const activeBtn = document.getElementById(`btn-${scenarioType}`);
+            if (scenarioType === 'optimistic') {
+                activeBtn.style.background = '#10b981';
+                activeBtn.style.color = 'white';
+                document.getElementById('currentScenarioLabel').textContent = 'Optimistic Scenario';
+                document.getElementById('scenarioDesc1').textContent = 'optimistic';
+            } else if (scenarioType === 'pessimistic') {
+                activeBtn.style.background = '#ef4444';
+                activeBtn.style.color = 'white';
+                document.getElementById('currentScenarioLabel').textContent = 'Pessimistic Scenario';
+                document.getElementById('scenarioDesc1').textContent = 'pessimistic';
+            } else {
+                activeBtn.style.background = 'var(--primary-color)';
+                activeBtn.style.color = 'white';
+                document.getElementById('currentScenarioLabel').textContent = 'Base Case Scenario';
+                document.getElementById('scenarioDesc1').textContent = 'base case';
+            }
+            activeBtn.classList.add('active');
 
             // Display results
-            document.getElementById('yearsToRetirement').textContent = year;
-            document.getElementById('retirementAge').textContent = retirementAge;
-            document.getElementById('fireNumber').textContent = formatCurrency(fireNumber);
-            document.getElementById('monthlySavings').textContent = formatCurrency(monthlySavings);
-            document.getElementById('progressBar').style.width = Math.min(currentProgress, 100) + '%';
+            document.getElementById('yearsToRetirement').textContent = result.year;
+            document.getElementById('retirementAge').textContent = result.retirementAge;
+            document.getElementById('fireNumber').textContent = formatCurrency(result.fireNumber);
+            document.getElementById('monthlySavings').textContent = formatCurrency(result.monthlySavings);
+            document.getElementById('progressBar').style.width = Math.min(result.currentProgress, 100) + '%';
 
             // Build breakdown table
             const tbody = document.getElementById('breakdownBody');
             tbody.innerHTML = '';
 
-            breakdown.forEach(row => {
+            result.breakdown.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${row.age}</strong></td>
@@ -1192,6 +1374,7 @@
             });
 
             // Sample data for charts (show every year if < 30 years, else every 2-3 years)
+            const chartData = result.chartData;
             const sampleInterval = chartData.years.length <= 30 ? 1 : Math.ceil(chartData.years.length / 30);
             const sampledData = {
                 labels: [],
@@ -1208,14 +1391,20 @@
             }
 
             // Create Portfolio Growth Chart
-            createPortfolioChart(sampledData, fireNumber);
+            createPortfolioChart(sampledData, result.fireNumber);
 
             // Create Contributions vs Returns Chart
             createContributionsChart(sampledData);
 
-            // Show results
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Show results (only on first calculation)
+            if (!document.getElementById('results').classList.contains('hidden') === false) {
+                document.getElementById('results').classList.remove('hidden');
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function switchScenario(scenarioType) {
+            displayScenario(scenarioType);
         }
 
         function createPortfolioChart(data, fireNumber) {
