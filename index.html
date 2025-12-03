@@ -772,6 +772,56 @@
                 <div class="progress-fill" id="progressBar"></div>
             </div>
 
+            <!-- Success Probability Meter -->
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 2rem; border-radius: 10px; margin: 2rem 0; border: 2px solid #10b981;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 2rem;">🎯</span>
+                    <div>
+                        <h3 style="color: #166534; margin: 0; font-size: 1.2rem;">Plan Success Probability</h3>
+                        <p style="color: #15803d; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Based on historical market data and your withdrawal rate</p>
+                    </div>
+                </div>
+
+                <!-- Probability Gauge -->
+                <div style="position: relative; margin: 1.5rem 0;">
+                    <div style="height: 40px; background: linear-gradient(to right, #ef4444 0%, #f59e0b 25%, #eab308 50%, #84cc16 75%, #10b981 100%); border-radius: 20px; position: relative; overflow: hidden;">
+                        <div id="probabilityMarker" style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 4px; height: 56px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: left 0.5s ease;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-light);">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <!-- Probability Score -->
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    <div style="font-size: 3rem; font-weight: 700; color: #166534;" id="successProbability">--</div>
+                    <div style="font-size: 1.1rem; color: #15803d; margin-top: 0.5rem;" id="probabilityDescription">Calculating success rate...</div>
+                </div>
+
+                <!-- Explanation -->
+                <div style="background: rgba(255, 255, 255, 0.8); padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                    <h4 style="color: #166534; margin: 0 0 1rem 0; font-size: 1rem;">How is this calculated?</h4>
+                    <div style="font-size: 0.9rem; color: #15803d; line-height: 1.7;">
+                        <p style="margin: 0 0 0.75rem 0;">
+                            Success probability is based on <strong>historical data from the Trinity Study</strong>, which analyzed retirement success rates from 1926-2009 across different withdrawal rates and time periods.
+                        </p>
+                        <ul style="margin: 0 0 0.75rem 1.5rem; padding: 0;">
+                            <li><strong>90%+ Success:</strong> High confidence - Your plan has survived most historical market scenarios</li>
+                            <li><strong>75-90% Success:</strong> Good probability - Minor adjustments may improve safety</li>
+                            <li><strong>60-75% Success:</strong> Moderate risk - Consider reducing expenses or increasing savings</li>
+                            <li><strong>&lt;60% Success:</strong> High risk - Significant changes recommended</li>
+                        </ul>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--text-light);">
+                            <strong>Note:</strong> This is a simplified estimate. Actual success depends on sequence of returns, market timing, life expectancy, and flexibility to adjust spending. Current scenario: <span id="probabilityScenarioNote" style="font-weight: 600;">Base Case</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Social Sharing -->
             <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
                 <p style="color: white; margin-bottom: 1rem; font-weight: 500;">Share Your FIRE Plan</p>
@@ -1396,6 +1446,9 @@
             // Create Contributions vs Returns Chart
             createContributionsChart(sampledData);
 
+            // Calculate and display success probability
+            calculateSuccessProbability(result, scenarioType);
+
             // Show results (only on first calculation)
             if (!document.getElementById('results').classList.contains('hidden') === false) {
                 document.getElementById('results').classList.remove('hidden');
@@ -1405,6 +1458,94 @@
 
         function switchScenario(scenarioType) {
             displayScenario(scenarioType);
+        }
+
+        function calculateSuccessProbability(result, scenarioType) {
+            // Based on Trinity Study data - simplified lookup table
+            // Success rate depends on withdrawal rate and time horizon
+            // For a 30-year retirement period with stock/bond allocation
+
+            const withdrawalRate = (result.fireNumber > 0) ?
+                ((parseFloat(document.getElementById('retirementExpenses').value) ||
+                  parseFloat(document.getElementById('annualExpenses').value)) / result.fireNumber) * 100 : 4;
+
+            const stockAlloc = parseFloat(document.getElementById('stockAllocation').value) || 70;
+            const retirementYears = 30; // Standard retirement period assumption
+
+            // Simplified Trinity Study approximation
+            // Higher stock allocation and lower withdrawal rate = higher success
+            let baseSuccessRate;
+
+            if (withdrawalRate <= 3) {
+                baseSuccessRate = 100;
+            } else if (withdrawalRate <= 3.5) {
+                baseSuccessRate = 98;
+            } else if (withdrawalRate <= 4) {
+                baseSuccessRate = 95;
+            } else if (withdrawalRate <= 4.5) {
+                baseSuccessRate = 87;
+            } else if (withdrawalRate <= 5) {
+                baseSuccessRate = 79;
+            } else if (withdrawalRate <= 5.5) {
+                baseSuccessRate = 70;
+            } else if (withdrawalRate <= 6) {
+                baseSuccessRate = 62;
+            } else if (withdrawalRate <= 7) {
+                baseSuccessRate = 45;
+            } else {
+                baseSuccessRate = 30;
+            }
+
+            // Adjust for stock allocation (higher stocks = better long-term success)
+            const stockAdjustment = ((stockAlloc - 50) / 100) * 10; // +/- up to 5%
+            let successRate = baseSuccessRate + stockAdjustment;
+
+            // Adjust for scenario type
+            if (scenarioType === 'optimistic') {
+                successRate = Math.min(100, successRate + 10);
+            } else if (scenarioType === 'pessimistic') {
+                successRate = Math.max(10, successRate - 15);
+            }
+
+            // Cap between 15% and 100%
+            successRate = Math.max(15, Math.min(100, successRate));
+
+            // Update UI
+            const successProbElement = document.getElementById('successProbability');
+            const probabilityDescElement = document.getElementById('probabilityDescription');
+            const probabilityMarker = document.getElementById('probabilityMarker');
+            const probabilityScenarioNote = document.getElementById('probabilityScenarioNote');
+
+            successProbElement.textContent = Math.round(successRate) + '%';
+            probabilityMarker.style.left = successRate + '%';
+
+            // Update scenario note
+            const scenarioLabels = {
+                'optimistic': 'Optimistic Scenario',
+                'base': 'Base Case',
+                'pessimistic': 'Pessimistic Scenario'
+            };
+            probabilityScenarioNote.textContent = scenarioLabels[scenarioType] || 'Base Case';
+
+            // Update description based on success rate
+            let description, color;
+            if (successRate >= 90) {
+                description = 'Excellent! Your plan has high historical success rate';
+                color = '#166534';
+            } else if (successRate >= 75) {
+                description = 'Good probability of success with minor adjustments';
+                color = '#15803d';
+            } else if (successRate >= 60) {
+                description = 'Moderate risk - consider optimizing your plan';
+                color = '#ca8a04';
+            } else {
+                description = 'High risk - significant changes recommended';
+                color = '#dc2626';
+            }
+
+            probabilityDescElement.textContent = description;
+            successProbElement.style.color = color;
+            probabilityDescElement.style.color = color;
         }
 
         function createPortfolioChart(data, fireNumber) {
