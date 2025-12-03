@@ -78,10 +78,17 @@ This project implements comprehensive SEO best practices:
 
 ## 📈 Recent Updates (December 2025)
 
+### Phase 1: Advanced Uncertainty Modeling
 - ✅ Added three-scenario analysis (optimistic/base/pessimistic)
 - ✅ Implemented Trinity Study-based success probability meter
 - ✅ Added historical stress tests (2008, 2000, 2020 crises)
 - ✅ Enhanced disclaimers with explicit limitations
+
+### Phase 2: Critical Expert-Requested Features
+- ✅ **Tax bucket separation** - Pre-Tax/Roth/Taxable account breakdown with after-tax calculations
+- ✅ **CoastFIRE calculator** - Shows when you can stop contributing and coast to FIRE
+- ✅ **Inflation toggle** - Switch between nominal and real (today's dollars) to remove inflation illusion
+- ✅ **Visual chart milestones** - CoastFIRE and FIRE Number lines on portfolio growth chart
 - ✅ Updated all references to 2025
 
 ## 📝 License
