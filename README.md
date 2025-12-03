@@ -1,39 +1,44 @@
-# Free Financial Calculators 2024 - Retirement, Mortgage, Investment Tools
+# Advanced FIRE Retirement Calculator 2025 - Free Scenario Analysis & Stress Testing
 
 🌐 **Live Site:** [www.retirementcalcpro.com](https://www.retirementcalcpro.com/)
 
-Professional-grade financial calculators for retirement planning, mortgage calculations, investment analysis, and personal finance management. 100% free, no registration required.
+Professional-grade FIRE (Financial Independence Retire Early) calculator with **scenario analysis**, **success probability modeling**, and **historical stress testing**. 100% free, no registration required.
 
-## 🧮 Available Calculators
+## 🚀 Advanced Features (NEW in 2025)
 
-### Retirement & Investment
-- **Retirement Calculator** - Plan your retirement savings with compound interest projections
-- **401(k) Calculator** - Calculate 401(k) growth with employer matching
-- **Investment Calculator** - Track investment returns over time
-- **Compound Interest Calculator** - See how compound interest grows your money
-- **Savings Goal Calculator** - Determine monthly savings needed for goals
+### **Scenario Analysis**
+- **Three calculation modes**: Optimistic, Base Case, Pessimistic
+- **Range-based projections** showing best-to-worst case outcomes
+- **Interactive scenario comparison** with one-click switching
+- **Addresses uncertainty** instead of relying on single-point estimates
 
-### Home & Mortgage
-- **Mortgage Calculator** - Calculate monthly payments and total interest
-- **Auto Loan Calculator** - Auto financing payment calculations
+### **Success Probability Meter**
+- **Trinity Study-based calculations** showing historical success rates
+- **Visual probability gauge** with color-coded risk assessment
+- **Withdrawal rate analysis** based on 1926-2009 market data
+- **Dynamic updates** for each scenario type
 
-### Debt Management
-- **Loan Payment Calculator** - Generic loan calculations
-- **Debt Payoff Calculator** - Time to become debt-free
+### **Stress Test Scenarios**
+- **2008 Financial Crisis**: -37% impact modeling
+- **2000 Dot-com Crash**: -49% worst-case analysis
+- **2020 COVID-19**: -34% rapid recovery simulation
+- **Personalized calculations** based on your asset allocation
 
-### Budgeting & Planning
-- **Budget Calculator** - Track income vs expenses
-- **Income Tax Calculator** - Estimate federal taxes (2024 brackets)
-- **Tip Calculator** - Calculate tips and split bills
+### **Core FIRE Planning**
+- **Asset allocation modeling** (stocks/bonds/cash with blended returns)
+- **Tax-adjusted FIRE number** calculations
+- **Multiple income/expense streams** with age-based activation
+- **Interactive charts** showing portfolio growth and contribution breakdown
+- **Year-by-year projections** with detailed breakdown tables
 
-## ✨ Features
+## ✨ Key Benefits
 
+- ✅ **Evidence-Based** - Trinity Study validation + historical market data
+- ✅ **Uncertainty Modeling** - Scenario analysis eliminates false precision
+- ✅ **Comprehensive** - Not just a calculator, but a planning framework
 - ✅ **100% Free** - No registration, no hidden fees
-- ✅ **Instant Results** - Real-time calculations
-- ✅ **Mobile Friendly** - Works on all devices
-- ✅ **Privacy Focused** - No data collection
-- ✅ **Accurate** - Industry-standard formulas
-- ✅ **Easy to Use** - Simple, intuitive interface
+- ✅ **Privacy Focused** - All calculations run locally in your browser
+- ✅ **Educational** - Learn about withdrawal rates, asset allocation, market volatility
 
 ## 🚀 SEO Optimized
 
@@ -55,9 +60,29 @@ This project implements comprehensive SEO best practices:
 - Schema.org JSON-LD
 - Mobile-first responsive design
 
-## 📊 Keywords
+## 📊 SEO Keywords
 
-retirement calculator, mortgage calculator, investment calculator, financial planning tools, 401k calculator, loan calculator, compound interest calculator, budget calculator, debt payoff calculator, savings calculator, tax calculator
+**Primary**: FIRE calculator 2025, retirement calculator with scenarios, early retirement planning, financial independence calculator
+
+**Secondary**: Trinity Study calculator, withdrawal rate calculator, stress test retirement, scenario analysis retirement, retirement success probability, asset allocation calculator
+
+**Long-tail**: retirement calculator optimistic pessimistic, FIRE calculator market crash, retirement planning with uncertainty, safe withdrawal rate 2025
+
+## 🎯 Use Cases
+
+- **FIRE Enthusiasts**: Model different paths to financial independence with realistic uncertainty
+- **Early Retirees**: Stress-test your plan against historical market crashes
+- **Conservative Planners**: See pessimistic scenarios to ensure adequate safety margin
+- **Financial Advisors**: Use as a conversation starter about market volatility and sequence risk
+- **Investors**: Understand how asset allocation affects retirement outcomes
+
+## 📈 Recent Updates (December 2025)
+
+- ✅ Added three-scenario analysis (optimistic/base/pessimistic)
+- ✅ Implemented Trinity Study-based success probability meter
+- ✅ Added historical stress tests (2008, 2000, 2020 crises)
+- ✅ Enhanced disclaimers with explicit limitations
+- ✅ Updated all references to 2025
 
 ## 📝 License
 
@@ -70,4 +95,4 @@ MIT License - Free to use and modify
 
 ---
 
-**Disclaimer:** These calculators are for educational purposes only. Consult financial professionals for personalized advice.
+**Disclaimer:** This calculator provides scenario-based estimates for educational purposes only. It uses simplified assumptions that may not reflect real-world complexity including market volatility, sequence-of-returns risk, tax law changes, healthcare costs, and life events. The optimistic/base/pessimistic scenarios help you understand uncertainty, but are not substitutes for comprehensive financial planning. Consult a qualified financial advisor who can model Monte Carlo simulations, tax optimization, and create a personalized retirement strategy.
