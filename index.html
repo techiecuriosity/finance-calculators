@@ -822,6 +822,85 @@
                 </div>
             </div>
 
+            <!-- Stress Test Scenarios -->
+            <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 2rem; border-radius: 10px; margin: 2rem 0; border: 2px solid #f97316;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleStressTests()">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 2rem;">⚡</span>
+                        <div>
+                            <h3 style="color: #991b1b; margin: 0; font-size: 1.2rem;">Stress Test: Market Crisis Scenarios</h3>
+                            <p style="color: #7f1d1d; margin: 0.25rem 0 0 0; font-size: 0.9rem;">See how your plan handles major market downturns</p>
+                        </div>
+                    </div>
+                    <div id="stressTestToggle" style="font-size: 1.5rem; color: #991b1b; transition: transform 0.3s;">▼</div>
+                </div>
+
+                <div id="stressTestContent" style="display: none; margin-top: 1.5rem;">
+                    <p style="color: #7f1d1d; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        These scenarios simulate how your retirement plan would be impacted by historical market crises. Understanding worst-case scenarios helps you prepare for volatility.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                        <!-- 2008 Financial Crisis -->
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                            <h4 style="color: #991b1b; margin: 0 0 0.75rem 0; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>📉</span> 2008 Financial Crisis
+                            </h4>
+                            <div style="font-size: 0.85rem; color: #7f1d1d; line-height: 1.6;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Impact:</strong> -37% stock market drop, -18 month duration</p>
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Your Portfolio:</strong> <span id="stress2008" style="font-weight: 600;">Calculating...</span></p>
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Recovery Time:</strong> <span id="recovery2008" style="font-weight: 600;">~4 years historically</span></p>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-light);">Peak crisis: March 2009</p>
+                            </div>
+                        </div>
+
+                        <!-- Dot-com Crash -->
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                            <h4 style="color: #991b1b; margin: 0 0 0.75rem 0; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>📉</span> 2000 Dot-com Crash
+                            </h4>
+                            <div style="font-size: 0.85rem; color: #7f1d1d; line-height: 1.6;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Impact:</strong> -49% tech-heavy drop, -31 month duration</p>
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Your Portfolio:</strong> <span id="stressDotcom" style="font-weight: 600;">Calculating...</span></p>
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Recovery Time:</strong> <span id="recoveryDotcom" style="font-weight: 600;">~7 years to new highs</span></p>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-light);">Peak crisis: October 2002</p>
+                            </div>
+                        </div>
+
+                        <!-- COVID-19 -->
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc2626;">
+                            <h4 style="color: #991b1b; margin: 0 0 0.75rem 0; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>📉</span> 2020 COVID-19 Crash
+                            </h4>
+                            <div style="font-size: 0.85rem; color: #7f1d1d; line-height: 1.6;">
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Impact:</strong> -34% rapid drop, -1 month duration</p>
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Your Portfolio:</strong> <span id="stressCovid" style="font-weight: 600;">Calculating...</span></p>
+                                <p style="margin: 0 0 0.5rem 0;"><strong>Recovery Time:</strong> <span id="recoveryCovid" style="font-weight: 600;">~5 months (V-shaped)</span></p>
+                                <p style="margin: 0; font-size: 0.8rem; color: var(--text-light);">Peak crisis: March 2020</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255, 255, 255, 0.8); padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                        <h4 style="color: #991b1b; margin: 0 0 0.75rem 0; font-size: 1rem;">💡 What This Means For You</h4>
+                        <div style="font-size: 0.9rem; color: #7f1d1d; line-height: 1.7;">
+                            <p style="margin: 0 0 0.75rem 0;">
+                                <strong id="stressTestSummary">If a 2008-level crisis occurred at retirement start, your portfolio would drop but likely recover given your time horizon.</strong>
+                            </p>
+                            <ul style="margin: 0 0 0.75rem 1.5rem; padding: 0;">
+                                <li><strong>Diversification helps:</strong> Bonds and cash reduce volatility during crashes</li>
+                                <li><strong>Time heals:</strong> Markets historically recover, but sequence matters</li>
+                                <li><strong>Flexibility key:</strong> Ability to reduce spending 10-20% dramatically improves survival</li>
+                                <li><strong>Emergency fund:</strong> 2-3 years of expenses in bonds/cash protects against selling low</li>
+                            </ul>
+                            <p style="margin: 0; font-size: 0.85rem; color: var(--text-light);">
+                                <strong>Note:</strong> These stress tests assume the crisis occurs at retirement start (worst-case timing). Earlier crises would have less impact due to ongoing contributions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Social Sharing -->
             <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
                 <p style="color: white; margin-bottom: 1rem; font-weight: 500;">Share Your FIRE Plan</p>
@@ -1458,6 +1537,78 @@
 
         function switchScenario(scenarioType) {
             displayScenario(scenarioType);
+        }
+
+        function toggleStressTests() {
+            const content = document.getElementById('stressTestContent');
+            const toggle = document.getElementById('stressTestToggle');
+
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                toggle.style.transform = 'rotate(180deg)';
+
+                // Calculate stress test impacts when opened
+                calculateStressTests();
+            } else {
+                content.style.display = 'none';
+                toggle.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function calculateStressTests() {
+            const result = scenarioResults[currentScenario];
+            if (!result) return;
+
+            const fireNumber = result.fireNumber;
+            const stockAlloc = parseFloat(document.getElementById('stockAllocation').value) / 100;
+            const bondAlloc = parseFloat(document.getElementById('bondAllocation').value) / 100;
+
+            // 2008 Crisis: -37% stocks, -5% bonds
+            const impact2008Stocks = -0.37;
+            const impact2008Bonds = -0.05;
+            const portfolioImpact2008 = (stockAlloc * impact2008Stocks + bondAlloc * impact2008Bonds);
+            const portfolioAfter2008 = fireNumber * (1 + portfolioImpact2008);
+            const loss2008 = fireNumber - portfolioAfter2008;
+
+            // Dot-com: -49% stocks, +8% bonds (flight to safety)
+            const impactDotcomStocks = -0.49;
+            const impactDotcomBonds = 0.08;
+            const portfolioImpactDotcom = (stockAlloc * impactDotcomStocks + bondAlloc * impactDotcomBonds);
+            const portfolioAfterDotcom = fireNumber * (1 + portfolioImpactDotcom);
+            const lossDotcom = fireNumber - portfolioAfterDotcom;
+
+            // COVID: -34% stocks, +5% bonds
+            const impactCovidStocks = -0.34;
+            const impactCovidBonds = 0.05;
+            const portfolioImpactCovid = (stockAlloc * impactCovidStocks + bondAlloc * impactCovidBonds);
+            const portfolioAfterCovid = fireNumber * (1 + portfolioImpactCovid);
+            const lossCovid = fireNumber - portfolioAfterCovid;
+
+            // Update UI
+            document.getElementById('stress2008').textContent =
+                formatCurrency(portfolioAfter2008) + ' (down ' + formatCurrency(loss2008) + ')';
+            document.getElementById('stressDotcom').textContent =
+                formatCurrency(portfolioAfterDotcom) + ' (down ' + formatCurrency(lossDotcom) + ')';
+            document.getElementById('stressCovid').textContent =
+                formatCurrency(portfolioAfterCovid) + ' (down ' + formatCurrency(lossCovid) + ')';
+
+            // Calculate worst case
+            const worstLoss = Math.max(loss2008, lossDotcom, lossCovid);
+            const worstLossPercent = ((worstLoss / fireNumber) * 100).toFixed(1);
+
+            // Update summary
+            const stockPercent = (stockAlloc * 100).toFixed(0);
+            let summary = `With your ${stockPercent}% stock allocation, a worst-case scenario (2000 Dot-com style) would reduce your portfolio by approximately ${worstLossPercent}%. `;
+
+            if (stockAlloc >= 0.8) {
+                summary += 'Your high stock allocation increases volatility but offers better long-term growth potential.';
+            } else if (stockAlloc >= 0.6) {
+                summary += 'Your balanced allocation provides good growth with moderate protection during crashes.';
+            } else {
+                summary += 'Your conservative allocation offers significant protection during market downturns.';
+            }
+
+            document.getElementById('stressTestSummary').textContent = summary;
         }
 
         function calculateSuccessProbability(result, scenarioType) {
