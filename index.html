@@ -859,12 +859,70 @@
                 <div class="progress-fill" id="progressBar"></div>
             </div>
 
+            <!-- Monte Carlo Simulation -->
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 2rem; border-radius: 10px; margin: 2rem 0; border: 2px solid #0ea5e9;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <span style="font-size: 2rem;">🎲</span>
+                    <div style="flex: 1;">
+                        <h3 style="color: #075985; margin: 0; font-size: 1.2rem;">Monte Carlo Simulation (1,000 Scenarios)</h3>
+                        <p style="color: #0c4a6e; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Advanced probabilistic modeling with randomized market returns</p>
+                    </div>
+                    <button onclick="runMonteCarloSimulation()" id="monteCarloBtn" style="padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; white-space: nowrap;">
+                        Run Simulation
+                    </button>
+                </div>
+
+                <div id="monteCarloResults" style="display: none;">
+                    <!-- Success Rate Summary -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; border-left: 4px solid #10b981;">
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">Success Rate</div>
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #10b981;" id="monteCarloSuccessRate">--</div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">of 1,000 scenarios</div>
+                        </div>
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; border-left: 4px solid #0ea5e9;">
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">Median Outcome</div>
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #0ea5e9;" id="monteCarloMedian">--</div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">years to FIRE</div>
+                        </div>
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; border-left: 4px solid #f59e0b;">
+                            <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">Range (10th-90th %ile)</div>
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #f59e0b;" id="monteCarloRange">--</div>
+                            <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">years spread</div>
+                        </div>
+                    </div>
+
+                    <!-- Monte Carlo Distribution Chart -->
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="color: #075985; margin: 0 0 1rem 0; font-size: 1rem;">Distribution of Outcomes</h4>
+                        <canvas id="monteCarloChart" style="max-height: 250px;"></canvas>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div style="background: rgba(255, 255, 255, 0.8); padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="color: #075985; margin: 0 0 0.75rem 0; font-size: 1rem;">📊 How Monte Carlo Works</h4>
+                        <p style="font-size: 0.9rem; color: #0c4a6e; margin: 0 0 0.75rem 0;">
+                            Instead of assuming a constant 7% return every year, Monte Carlo runs <strong>1,000 different scenarios</strong> where each year's return is randomly selected from a realistic distribution based on historical market data:
+                        </p>
+                        <ul style="font-size: 0.9rem; color: #0c4a6e; margin: 0 0 0.75rem 1.5rem;">
+                            <li><strong>Stock volatility:</strong> ±18% standard deviation (historical S&P 500)</li>
+                            <li><strong>Bond volatility:</strong> ±6% standard deviation</li>
+                            <li><strong>Sequence of returns risk:</strong> Models bad years early vs. late</li>
+                            <li><strong>Real-world accuracy:</strong> Accounts for market crashes and booms</li>
+                        </ul>
+                        <p style="font-size: 0.85rem; color: #64748b; margin: 0;" id="monteCarloInterpretation">
+                            <!-- Dynamic interpretation will be inserted here -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Success Probability Meter -->
             <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 2rem; border-radius: 10px; margin: 2rem 0; border: 2px solid #10b981;">
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
                     <span style="font-size: 2rem;">🎯</span>
                     <div>
-                        <h3 style="color: #166534; margin: 0; font-size: 1.2rem;">Plan Success Probability</h3>
+                        <h3 style="color: #166534; margin: 0; font-size: 1.2rem;">Plan Success Probability (Trinity Study)</h3>
                         <p style="color: #15803d; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Based on historical market data and your withdrawal rate</p>
                     </div>
                 </div>
@@ -1148,8 +1206,10 @@
         // Store chart instances globally to destroy them on recalculation
         let portfolioChartInstance = null;
         let contributionsChartInstance = null;
+        let monteCarloChartInstance = null;
         let streamCounter = 0;
         let incomeExpenseStreams = [];
+        let monteCarloResultsData = null;
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', {
@@ -1765,6 +1825,212 @@
 
         function switchScenario(scenarioType) {
             displayScenario(scenarioType);
+        }
+
+        // Monte Carlo Simulation Engine
+        function runMonteCarloSimulation() {
+            const btn = document.getElementById('monteCarloBtn');
+            btn.textContent = 'Running...';
+            btn.disabled = true;
+
+            // Use setTimeout to allow UI to update
+            setTimeout(() => {
+                const results = performMonteCarloSimulation();
+                displayMonteCarloResults(results);
+                btn.textContent = 'Re-run Simulation';
+                btn.disabled = false;
+            }, 100);
+        }
+
+        function performMonteCarloSimulation() {
+            const numSimulations = 1000;
+            const currentAge = parseInt(document.getElementById('currentAge').value);
+
+            // Calculate effective current savings from tax buckets
+            const preTax = parseFloat(document.getElementById('preTaxSavings').value) || 0;
+            const roth = parseFloat(document.getElementById('rothSavings').value) || 0;
+            const taxable = parseFloat(document.getElementById('taxableSavings').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100 || 0.15;
+            const currentSavings = (preTax * (1 - taxRate)) + roth + (taxable * 0.85);
+
+            const annualIncome = parseFloat(document.getElementById('annualIncome').value);
+            const savingsRate = parseFloat(document.getElementById('savingsRate').value) / 100;
+            const annualSavings = annualIncome * savingsRate;
+            const withdrawalRate = parseFloat(document.getElementById('withdrawalRate').value) / 100;
+            const retirementExpenses = parseFloat(document.getElementById('retirementExpenses').value) ||
+                                       parseFloat(document.getElementById('annualExpenses').value);
+
+            const fireNumber = (retirementExpenses / (1 - taxRate)) / withdrawalRate;
+
+            // Asset allocation and expected returns
+            const stockAlloc = parseFloat(document.getElementById('stockAllocation').value) / 100;
+            const bondAlloc = parseFloat(document.getElementById('bondAllocation').value) / 100;
+            const stockReturn = parseFloat(document.getElementById('stockReturn').value) / 100;
+            const bondReturn = parseFloat(document.getElementById('bondReturn').value) / 100;
+
+            // Historical volatility (standard deviation)
+            const stockVolatility = 0.18; // 18% for S&P 500
+            const bondVolatility = 0.06;  // 6% for bonds
+
+            const yearsToFIRE = [];
+
+            // Run 1000 simulations
+            for (let sim = 0; sim < numSimulations; sim++) {
+                let portfolio = currentSavings;
+                let year = 0;
+                const maxYears = 50;
+
+                while (portfolio < fireNumber && year < maxYears) {
+                    year++;
+
+                    // Add annual savings
+                    portfolio += annualSavings;
+
+                    // Generate random returns using Box-Muller transform for normal distribution
+                    const stockRandomReturn = generateNormalRandom(stockReturn, stockVolatility);
+                    const bondRandomReturn = generateNormalRandom(bondReturn, bondVolatility);
+
+                    // Calculate weighted return for this year
+                    const portfolioReturn = (stockAlloc * stockRandomReturn) + (bondAlloc * bondRandomReturn);
+
+                    // Apply return
+                    portfolio *= (1 + portfolioReturn);
+
+                    if (portfolio >= fireNumber) {
+                        yearsToFIRE.push(year);
+                        break;
+                    }
+                }
+
+                // If didn't reach FIRE in 50 years, record as 50+
+                if (year >= maxYears) {
+                    yearsToFIRE.push(maxYears);
+                }
+            }
+
+            // Sort results for percentile calculations
+            yearsToFIRE.sort((a, b) => a - b);
+
+            // Calculate statistics
+            const median = yearsToFIRE[Math.floor(numSimulations / 2)];
+            const percentile10 = yearsToFIRE[Math.floor(numSimulations * 0.10)];
+            const percentile90 = yearsToFIRE[Math.floor(numSimulations * 0.90)];
+            const successRate = (yearsToFIRE.filter(y => y < maxYears).length / numSimulations) * 100;
+
+            return {
+                yearsToFIRE,
+                median,
+                percentile10,
+                percentile90,
+                successRate,
+                numSimulations
+            };
+        }
+
+        // Box-Muller transform to generate normally distributed random numbers
+        function generateNormalRandom(mean, stdDev) {
+            let u1 = Math.random();
+            let u2 = Math.random();
+
+            // Avoid log(0)
+            while (u1 === 0) u1 = Math.random();
+
+            const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+            return mean + z0 * stdDev;
+        }
+
+        function displayMonteCarloResults(results) {
+            // Show results section
+            document.getElementById('monteCarloResults').style.display = 'block';
+
+            // Update summary cards
+            document.getElementById('monteCarloSuccessRate').textContent = results.successRate.toFixed(1) + '%';
+            document.getElementById('monteCarloMedian').textContent = results.median;
+            document.getElementById('monteCarloRange').textContent =
+                results.percentile10 + ' - ' + results.percentile90;
+
+            // Create histogram of results
+            const bins = 15;
+            const minYear = Math.min(...results.yearsToFIRE);
+            const maxYear = Math.max(...results.yearsToFIRE);
+            const binSize = (maxYear - minYear) / bins;
+
+            const histogram = new Array(bins).fill(0);
+            const binLabels = [];
+
+            for (let i = 0; i < bins; i++) {
+                const binStart = minYear + (i * binSize);
+                const binEnd = binStart + binSize;
+                binLabels.push(Math.round(binStart) + '-' + Math.round(binEnd));
+
+                results.yearsToFIRE.forEach(year => {
+                    if (year >= binStart && year < binEnd) {
+                        histogram[i]++;
+                    }
+                });
+            }
+
+            // Create distribution chart
+            if (monteCarloChartInstance) {
+                monteCarloChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('monteCarloChart').getContext('2d');
+            monteCarloChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: binLabels,
+                    datasets: [{
+                        label: 'Number of Scenarios',
+                        data: histogram,
+                        backgroundColor: 'rgba(14, 165, 233, 0.7)',
+                        borderColor: '#0ea5e9',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' scenarios (' +
+                                           ((context.parsed.y / results.numSimulations) * 100).toFixed(1) + '%)';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Number of Scenarios' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Years to FIRE' }
+                        }
+                    }
+                }
+            });
+
+            // Add interpretation
+            let interpretation = '';
+            if (results.successRate >= 95) {
+                interpretation = '<strong style="color: #10b981;">✓ Excellent Plan:</strong> 95%+ of scenarios succeed. Your plan is highly resilient to market volatility. The wide range shows some scenarios reach FIRE much faster with good market luck.';
+            } else if (results.successRate >= 85) {
+                interpretation = '<strong style="color: #10b981;">✓ Strong Plan:</strong> 85-95% success rate indicates a solid plan with good tolerance for market downturns. Consider the pessimistic scenario for additional safety margin.';
+            } else if (results.successRate >= 70) {
+                interpretation = '<strong style="color: #f59e0b;">⚠ Moderate Risk:</strong> 70-85% success rate suggests vulnerability to sustained market downturns. Consider increasing savings rate or reducing target expenses.';
+            } else {
+                interpretation = '<strong style="color: #ef4444;">⚠ High Risk:</strong> Below 70% success rate indicates significant risk. Consider: (1) increasing savings rate, (2) reducing retirement expenses, (3) working longer, or (4) more conservative asset allocation.';
+            }
+
+            interpretation += ' The median outcome (' + results.median + ' years) represents the most likely scenario, while the range shows the spread due to market volatility.';
+            document.getElementById('monteCarloInterpretation').innerHTML = interpretation;
+
+            // Store results globally
+            monteCarloResultsData = results;
         }
 
         function toggleStressTests() {
