@@ -1414,13 +1414,23 @@
         function calculateRetirement() {
             // Get input values
             const currentAge = parseInt(document.getElementById('currentAge').value);
-            const currentSavings = parseFloat(document.getElementById('currentSavings').value);
+
+            // Calculate effective current savings from tax buckets
+            const preTax = parseFloat(document.getElementById('preTaxSavings').value) || 0;
+            const roth = parseFloat(document.getElementById('rothSavings').value) || 0;
+            const taxable = parseFloat(document.getElementById('taxableSavings').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100 || 0.15;
+
+            // Calculate after-tax effective value
+            const preTaxAfterTax = preTax * (1 - taxRate);
+            const taxableAfterTax = taxable * 0.85; // 15% capital gains
+            const currentSavings = preTaxAfterTax + roth + taxableAfterTax;
+
             const annualIncome = parseFloat(document.getElementById('annualIncome').value);
             const annualExpenses = parseFloat(document.getElementById('annualExpenses').value);
             const savingsRate = parseFloat(document.getElementById('savingsRate').value) / 100;
             const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
             const withdrawalRate = parseFloat(document.getElementById('withdrawalRate').value) / 100;
-            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
             const targetAge = parseInt(document.getElementById('targetAge').value) || null;
             const retirementExpenses = parseFloat(document.getElementById('retirementExpenses').value) || annualExpenses;
 
@@ -1708,7 +1718,13 @@
             const coastFireNumber = fireNumber / Math.pow(1 + investmentReturn, yearsToFIRE);
 
             // Find when you'll reach CoastFIRE number
-            const currentSavings = parseFloat(document.getElementById('currentSavings').value) || 0;
+            // Calculate effective current savings from tax buckets
+            const preTax = parseFloat(document.getElementById('preTaxSavings').value) || 0;
+            const roth = parseFloat(document.getElementById('rothSavings').value) || 0;
+            const taxable = parseFloat(document.getElementById('taxableSavings').value) || 0;
+            const taxRateCoast = parseFloat(document.getElementById('taxRate').value) / 100 || 0.15;
+            const currentSavings = (preTax * (1 - taxRateCoast)) + roth + (taxable * 0.85);
+
             const annualSavings = (parseFloat(document.getElementById('annualIncome').value) || 0) *
                                   (parseFloat(document.getElementById('savingsRate').value) / 100 || 0);
 
