@@ -24,6 +24,14 @@ Professional-grade FIRE (Financial Independence Retire Early) calculator with **
 - **2020 COVID-19**: -34% rapid recovery simulation
 - **Personalized calculations** based on your asset allocation
 
+### **Monte Carlo Simulation (NEW)**
+- **1,000 scenario modeling** with randomized market returns
+- **Box-Muller transform** for realistic return distributions (18% stock volatility, 6% bond volatility)
+- **Probability distribution chart** showing histogram of outcomes
+- **Success rate percentage** across all scenarios
+- **Percentile ranges** (10th, 50th/median, 90th) with dynamic interpretation
+- **Non-blocking execution** for smooth browser performance
+
 ### **Core FIRE Planning**
 - **Asset allocation modeling** (stocks/bonds/cash with blended returns)
 - **Tax-adjusted FIRE number** calculations
@@ -89,6 +97,7 @@ This project implements comprehensive SEO best practices:
 - ✅ **CoastFIRE calculator** - Shows when you can stop contributing and coast to FIRE
 - ✅ **Inflation toggle** - Switch between nominal and real (today's dollars) to remove inflation illusion
 - ✅ **Visual chart milestones** - CoastFIRE and FIRE Number lines on portfolio growth chart
+- ✅ **Monte Carlo simulation** - 1,000 scenario probabilistic modeling with distribution charts
 - ✅ Updated all references to 2025
 
 ## 📝 License
