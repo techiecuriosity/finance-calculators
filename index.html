@@ -569,29 +569,9 @@
 
     <main role="main" id="main-content">
         <div class="calculator-container">
-            <!-- Example Scenarios -->
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
-                <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.1rem;">
-                    🚀 Try an Example Scenario
-                </h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <button onclick="loadScenario('aggressive')" style="padding: 0.75rem; background: white; border: 2px solid var(--primary-color); border-radius: 8px; cursor: pointer; font-weight: 500; color: var(--primary-color); transition: all 0.2s;">
-                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚡</div>
-                        Aggressive Saver
-                    </button>
-                    <button onclick="loadScenario('moderate')" style="padding: 0.75rem; background: white; border: 2px solid var(--secondary-color); border-radius: 8px; cursor: pointer; font-weight: 500; color: var(--secondary-color); transition: all 0.2s;">
-                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">📊</div>
-                        Moderate Planner
-                    </button>
-                    <button onclick="loadScenario('conservative')" style="padding: 0.75rem; background: white; border: 2px solid #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 500; color: #f59e0b; transition: all 0.2s;">
-                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🛡️</div>
-                        Conservative Investor
-                    </button>
-                    <button onclick="loadScenario('latestart')" style="padding: 0.75rem; background: white; border: 2px solid #8b5cf6; border-radius: 8px; cursor: pointer; font-weight: 500; color: #8b5cf6; transition: all 0.2s;">
-                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎯</div>
-                        Late Start (40s)
-                    </button>
-                </div>
+            <!-- Quick Start Notice -->
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
+                <p style="color: var(--primary-color); font-weight: 500; margin: 0;">⚡ Quick Start: Fill in your numbers below and click Calculate → <a href="#example-scenarios" style="color: var(--primary-color); text-decoration: underline;">Or try example scenarios</a></p>
             </div>
 
             <!-- Section 1: Basic Information -->
@@ -929,10 +909,10 @@
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
                     <span style="font-size: 2rem;">🎲</span>
                     <div style="flex: 1;">
-                        <h3 style="color: #075985; margin: 0; font-size: 1.2rem;">Monte Carlo Simulation (1,000 Scenarios)</h3>
-                        <p style="color: #0c4a6e; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Advanced probabilistic modeling with randomized market returns</p>
+                        <h3 style="color: #075985; margin: 0; font-size: 1.2rem;">Monte Carlo Simulation (500 Scenarios)</h3>
+                        <p style="color: #0c4a6e; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Fast probabilistic modeling with randomized market returns</p>
                     </div>
-                    <button onclick="runMonteCarloSimulation()" id="monteCarloBtn" style="padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; white-space: nowrap;" aria-label="Run Monte Carlo simulation with 1,000 market scenarios">
+                    <button onclick="runMonteCarloSimulation()" id="monteCarloBtn" style="padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; white-space: nowrap;" aria-label="Run Monte Carlo simulation with 500 market scenarios">
                         🎲 Run Simulation
                     </button>
                 </div>
@@ -1231,6 +1211,34 @@
             <div style="margin-bottom: 1.5rem;">
                 <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Should I account for Social Security?</h3>
                 <p style="color: var(--text-light); line-height: 1.7;">Yes! Use the "Add Income Stream" feature to include Social Security starting at your planned claim age (62-70). The average benefit in 2025 is $1,900/month ($22,800/year), but check your SSA.gov statement for personalized estimates. Consider adding 2% annual COLA growth.</p>
+            </div>
+        </div>
+
+        <!-- Example Scenarios Section -->
+        <div id="example-scenarios" class="calculator-container" style="margin-top: 3rem;">
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 10px;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.1rem;">
+                    🚀 Try an Example Scenario
+                </h3>
+                <p style="color: var(--text-dark); margin-bottom: 1rem; font-size: 0.9rem;">Click any scenario below to auto-fill the calculator with realistic values</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <button onclick="loadScenario('aggressive')" style="padding: 0.75rem; background: white; border: 2px solid var(--primary-color); border-radius: 8px; cursor: pointer; font-weight: 500; color: var(--primary-color); transition: all 0.2s;">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">⚡</div>
+                        Aggressive Saver
+                    </button>
+                    <button onclick="loadScenario('moderate')" style="padding: 0.75rem; background: white; border: 2px solid var(--secondary-color); border-radius: 8px; cursor: pointer; font-weight: 500; color: var(--secondary-color); transition: all 0.2s;">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">📊</div>
+                        Moderate Planner
+                    </button>
+                    <button onclick="loadScenario('conservative')" style="padding: 0.75rem; background: white; border: 2px solid #f59e0b; border-radius: 8px; cursor: pointer; font-weight: 500; color: #f59e0b; transition: all 0.2s;">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🛡️</div>
+                        Conservative Investor
+                    </button>
+                    <button onclick="loadScenario('latestart')" style="padding: 0.75rem; background: white; border: 2px solid #8b5cf6; border-radius: 8px; cursor: pointer; font-weight: 500; color: #8b5cf6; transition: all 0.2s;">
+                        <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎯</div>
+                        Late Start (40s)
+                    </button>
+                </div>
             </div>
         </div>
     </main>
@@ -1906,20 +1914,27 @@
         // Monte Carlo Simulation Engine
         function runMonteCarloSimulation() {
             const btn = document.getElementById('monteCarloBtn');
-            btn.textContent = 'Running...';
+            btn.textContent = '⏳ Running...';
             btn.disabled = true;
 
-            // Use setTimeout to allow UI to update
+            // Use setTimeout to allow UI to update before heavy computation
             setTimeout(() => {
-                const results = performMonteCarloSimulation();
-                displayMonteCarloResults(results);
-                btn.textContent = 'Re-run Simulation';
-                btn.disabled = false;
-            }, 100);
+                try {
+                    const results = performMonteCarloSimulation();
+                    displayMonteCarloResults(results);
+                    btn.textContent = '🔄 Re-run Simulation';
+                    btn.disabled = false;
+                } catch (error) {
+                    console.error('Monte Carlo simulation error:', error);
+                    btn.textContent = '❌ Error - Try Again';
+                    btn.disabled = false;
+                    alert('Simulation failed. Please check your inputs and try again.');
+                }
+            }, 200);
         }
 
         function performMonteCarloSimulation() {
-            const numSimulations = 1000;
+            const numSimulations = 500; // Reduced from 1000 for better browser performance
             const currentAge = parseInt(document.getElementById('currentAge').value);
 
             // Calculate effective current savings from tax buckets
@@ -1950,36 +1965,28 @@
 
             const yearsToFIRE = [];
 
-            // Run 1000 simulations
+            // Run 500 simulations (optimized for browser performance)
             for (let sim = 0; sim < numSimulations; sim++) {
                 let portfolio = currentSavings;
                 let year = 0;
                 const maxYears = 50;
 
-                while (portfolio < fireNumber && year < maxYears) {
+                // Simulation loop
+                while (year < maxYears) {
                     year++;
 
-                    // Add annual savings
-                    portfolio += annualSavings;
+                    // Add annual savings and apply return in one step
+                    portfolio = (portfolio + annualSavings) * (1 + (stockAlloc * generateNormalRandom(stockReturn, stockVolatility)) + (bondAlloc * generateNormalRandom(bondReturn, bondVolatility)));
 
-                    // Generate random returns using Box-Muller transform for normal distribution
-                    const stockRandomReturn = generateNormalRandom(stockReturn, stockVolatility);
-                    const bondRandomReturn = generateNormalRandom(bondReturn, bondVolatility);
-
-                    // Calculate weighted return for this year
-                    const portfolioReturn = (stockAlloc * stockRandomReturn) + (bondAlloc * bondRandomReturn);
-
-                    // Apply return
-                    portfolio *= (1 + portfolioReturn);
-
+                    // Check if reached FIRE
                     if (portfolio >= fireNumber) {
                         yearsToFIRE.push(year);
                         break;
                     }
                 }
 
-                // If didn't reach FIRE in 50 years, record as 50+
-                if (year >= maxYears) {
+                // If didn't reach FIRE in 50 years, record as 50
+                if (year >= maxYears && portfolio < fireNumber) {
                     yearsToFIRE.push(maxYears);
                 }
             }
