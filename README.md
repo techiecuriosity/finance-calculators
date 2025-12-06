@@ -67,6 +67,44 @@ This project implements comprehensive SEO best practices:
 - Vanilla JavaScript
 - Schema.org JSON-LD
 - Mobile-first responsive design
+- Jest for testing (53 comprehensive tests)
+
+## 🧪 Testing
+
+This project includes comprehensive unit and integration tests covering all calculation scenarios.
+
+### Test Coverage
+- **53 total test cases** across 9 test suites
+- **Core FIRE calculations** - 4% rule, tax adjustments, withdrawal rates
+- **Tax bucket validation** - Pre-tax/Roth/Taxable calculations
+- **CoastFIRE calculations** - Present value and compound growth
+- **Monte Carlo simulations** - Box-Muller transform, percentiles, success rates
+- **Asset allocation** - Blended returns, portfolio growth
+- **Scenario analysis** - Optimistic/pessimistic projections
+- **Edge cases** - Zero values, extreme inputs, NaN/Infinity handling
+- **Integration tests** - Full retirement plan simulations
+
+### Running Tests
+
+```bash
+# Install dependencies
+npm install
+
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# View coverage report
+npm run test:verbose
+```
+
+### Browser-Based Testing
+
+Open `tests/test-runner.html` in your browser to run tests interactively.
+
+**See:** [tests/README.md](tests/README.md) for complete documentation
 
 ## 📊 SEO Keywords
 
