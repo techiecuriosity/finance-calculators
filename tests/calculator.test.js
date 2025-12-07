@@ -220,9 +220,14 @@ describe('CoastFIRE Calculations', () => {
         const coast20years = fireNumber / Math.pow(1.08, 20);
         const coast30years = fireNumber / Math.pow(1.08, 30);
 
-        expect(Math.round(coast10years)).toBe(694789);
-        expect(Math.round(coast20years)).toBe(321973);
-        expect(Math.round(coast30years)).toBe(149241);
+        // Verify CoastFIRE decreases significantly with more time
+        expect(Math.round(coast10years)).toBe(694790);
+        expect(Math.round(coast20years)).toBe(321822);
+        expect(Math.round(coast30years)).toBe(149066);
+
+        // Verify the pattern: more years = less needed today
+        expect(coast10years).toBeGreaterThan(coast20years);
+        expect(coast20years).toBeGreaterThan(coast30years);
     });
 });
 
@@ -298,8 +303,9 @@ describe('Monte Carlo Simulations', () => {
         const worstCase = baseReturn - (2 * volatility); // -26%
         const bestCase = baseReturn + (2 * volatility); // +46%
 
-        expect(worstCase).toBe(-0.26);
-        expect(bestCase).toBe(0.46);
+        // Use toBeCloseTo to handle floating point precision
+        expect(worstCase).toBeCloseTo(-0.26, 2);
+        expect(bestCase).toBeCloseTo(0.46, 2);
     });
 });
 
@@ -338,7 +344,8 @@ describe('Asset Allocation Calculations', () => {
 
         const aggressiveReturn = (0.90 * stockReturn) + (0.10 * bondReturn);
 
-        expect(aggressiveReturn).toBe(0.094);
+        // Use toBeCloseTo to handle floating point precision
+        expect(aggressiveReturn).toBeCloseTo(0.094, 3);
     });
 
     test('should handle conservative allocation (40/60)', () => {
@@ -474,7 +481,8 @@ describe('Edge Cases and Validation', () => {
 
         const fireNumber = expenses / withdrawalRate;
 
-        expect(fireNumber).toBe(6666667);
+        // Use toBeCloseTo to handle floating point precision
+        expect(fireNumber).toBeCloseTo(6666667, 0);
     });
 
     test('should handle very long time horizons (50 years)', () => {
